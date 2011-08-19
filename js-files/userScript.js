@@ -1,0 +1,177 @@
+/**
+ *  S.Weidele
+ */
+
+
+// Variablen
+var password;
+var loginName;
+var logFile;
+var logIndex;
+var android;
+var urlString;
+
+var version;
+
+// Funktionen
+
+window.log = function(message) {
+	// Wichtig für die Konstolenausgabe
+	console.log?console.log(message):alert(message);
+};
+
+function userInit() {
+	android = false;
+	
+	version = "0.9";
+	
+	document.getElementById("versionId").firstChild.data = version;
+	
+	if(android){
+		// für Android	
+		document.getElementById("platformId").firstChild.data = "Android App";
+		urlString = "http://speedtracks.org/";
+	}else{
+		// für lokales	
+		document.getElementById("platformId").firstChild.data = "Web App";
+		urlString = "../";
+	}
+}
+
+
+// Funktion die den User einloggt
+function userLogin(){
+	log("userLogin wird gestartet");
+	
+	password = document.getElementById("passwordId").value;
+	loginName = document.getElementById("loginNameId").value;
+
+	if(loginName == null || loginName == ""){
+		alert("Bitte geben sie einen Loginnamen ein");	
+		log("Kein Username eingegeben");
+	}else if(password == null || password == ""){
+		alert("Bitte geben sie ein Passwort ein");
+		log("Kein Passwort eingegeben");
+	}else{
+		var logedin = false;
+		
+		$.post(urlString + "speedtrack/STLoginServlet",
+				  { login: loginName, passwd: password },
+				  function(data){
+					  if(data.success){
+						  log("userLogin erfolgreich");
+						  location.href='indexLoggedIn.html'; 
+					  }else{
+						  log(data.message);
+						  alert(data.message);					  
+					  }
+				  }, "json"
+				);
+	}
+	
+	log("userLogin wird beendet");	
+}
+
+// Funktion die den User ausloggt
+function userLogout(){
+	log("userLogout wird gestartet");
+    $.ajax({
+    	type: "POST",
+		contentType: "application/json;",
+		dataType: "json",
+		async: false,
+    	url: urlString + "speedtrack/STLogoutServlet",
+    	success: function(data){
+    		location.href='index.html';
+    	}
+    });
+    log("userLogout wird beendet");
+}
+
+// Funktion die die Userregistrierrungsdaten versendet
+function registrationCommit(){
+	log("registrationCommit wird gestartet");
+	
+	initRegistry();
+	
+	$.post(urlString + "speedtrack/STRegistrationServlet",
+		{   action: "write",
+			login: document.getElementById("regNameId").value, 
+			pass1: document.getElementById("passwordId1").value, 
+			pass2: document.getElementById("passwordId2").value, 
+			email: document.getElementById("emailId").value, 
+			website: document.getElementById("WebsiteId").value, 
+			country: document.getElementById("landId").value, 
+			place: document.getElementById("placeId").value, 
+			aboutme: document.getElementById("aboutMeId").value },
+			function(data){
+				if(data.success){
+					location.href='index.html'; 
+				}else{
+					if(data.message == ""){
+						var resultString = "Folgende Fehler sind aufgetreten: ";
+						if(data.errors.login != null){
+							resultString = resultString + " Bei Loginname: " + data.errors.login ;
+							document.getElementById("loginNameLableId").setAttribute("style", "color:red");
+						}
+						if(data.errors.pass1 != null){
+							resultString = resultString + " Bei Passwort 1: " + data.errors.pass1;
+							document.getElementById("passwordLableId1").setAttribute("style", "color:red");
+						}
+						if(data.errors.pass2 != null){
+							 resultString = resultString + " Bei Password 2: " + data.errors.pass2;	
+								document.getElementById("passwordLableId2").setAttribute("style", "color:red");
+						}
+						if(data.errors.email != null){
+							resultString = resultString + " Bei E-Mail: " +  data.errors.email;
+							document.getElementById("emailLableId").setAttribute("style", "color:red");
+						}else if(resultString == "Folgende Fehler sind aufgetreten: "){							
+							resultString = "Es ist ein unbekannter Fehler aufgetreten";
+						}	
+						alert(resultString);
+					}else{
+						alert(data.message);					  						
+					}
+				}
+			}, "json"
+	);
+	log("registrationCommit wird beendet");
+}
+
+//
+//{"errors":{"pass2":"Unvollständige Eingabe!","pass1":"Unvollständige Eingabe!",
+//	"login":"Unvollständige Eingabe!","email":"Unvollständige Eingabe!"},"message":"","success":false}
+
+// Funktion die ein neues Password beantraegt
+function newPassword(){
+	log("newPassword wird gestartet");	
+	$.post(urlString + "speedtrack/STForgotPasswordServlet",
+			{ login: document.getElementById("forgetNameId").value },
+				function(data){
+					 if(data.success){
+						location.href='indexLoggedIn.html'; 
+					}else{
+						alert(data.message);					  
+				}
+			}, "json"
+	);
+	log("newPassword wird beendet");
+}
+
+// Funktion die den User weiterleitet
+function acceptInfo(){
+	location.href='indexRegistration.html';
+}
+
+// Funktion die den User weiterleitet
+function goBack(){
+	location.href='index.html';
+}
+
+// Funktion die die Farben der Lables auf schwarz setzt
+function initRegistry() {
+	document.getElementById("loginNameLableId").setAttribute("style", "color:black");
+	document.getElementById("passwordLableId1").setAttribute("style", "color:black");
+	document.getElementById("passwordLableId2").setAttribute("style", "color:black");
+	document.getElementById("emailLableId").setAttribute("style", "color:black");
+}
