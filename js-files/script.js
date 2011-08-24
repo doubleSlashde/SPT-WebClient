@@ -149,9 +149,9 @@ function geoStart() {
 			maximumAge: 10000
 		});
 		
-		// Geolocation funktioniert, es kann gemessen werden
-		document.getElementById("stateOfTracking").firstChild.data = "Geolocation erfolgreich";
-		geolocationStatus = true;
+//		// Geolocation funktioniert, es kann gemessen werden
+//		document.getElementById("stateOfTracking").firstChild.data = "Geolocation erfolgreich";
+//		geolocationStatus = true;
 		
 	    log("geo ist an, der Aktuelle Ort wird als Start gewählt");
 	}else{
