@@ -15,16 +15,11 @@
 				
 		<script type="text/javascript" src="jquery-mobile/jquery.mobile-1.0b2.js"></script>
  		<link rel="stylesheet" href="jquery-mobile/jquery.mobile-1.0b2.css"/>
-		
-
 	</head>
 	<body onload="userInit()">
 
 		<!-- Start of first page (Login)-->
 		<div data-role="page" id="loginPage" data-theme="d">
-
-			<div>
-			</div>	
 			<div data-role="header" data-theme="d">
 				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
 				<h1 class="ui-btn-right">Login</h1>
@@ -39,8 +34,8 @@
 				    <input type="password" id="passwordId" class="ui-btn-right"/>
 				</div>			
 				<div data-role="controlgroup" data-theme="c" >
-					<a href="#infoPage" data-role="button" data-transition="slide" data-theme="c" data-direction="reverse">Registrierung</a>
 					<a href="#newPasswordPage" data-role="button" data-transition="slide" data-theme="c">Passwort vergessen</a>
+					<a href="#infoPage" data-role="button" data-transition="slide" data-theme="c" data-direction="reverse">Registrierung</a>
 				</div>
 			</div><!-- /content -->	
 			<div data-role="footer" data-theme="d" data-position="fixed">
@@ -61,8 +56,8 @@
 			</div><!-- /header -->
 			<div data-role="content">
 				<div data-role="fieldcontain" data-theme="c">
-				    <label for="forgetNameId">Loginname:</label>
-				    <input type="text" id="loginNameId"/>
+				    <label for="forgetPasswordId">Loginname:</label>
+				    <input type="text" id="forgetPasswordId"/>
 				</div>
 			</div><!-- /content -->	
 			<div data-role="footer" data-theme="d" data-position="fixed">

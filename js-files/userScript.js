@@ -1,29 +1,28 @@
-/**
- *  S.Weidele
- */
+/*	------------------ Variablen ------------------ */	
+
+var urlString;						// String in dem URL gespeichert wird
 
 
-// Variablen
-var password;
-var loginName;
-var logFile;
-var logIndex;
-var android;
-var urlString;
+/*	------------------ Wichtig fuer Consolenausgabe ------------------ */
 
-var version;
-
-// Funktionen
 
 window.log = function(message) {
 	// Wichtig für die Konstolenausgabe
 	console.log?console.log(message):alert(message);
 };
 
+
+/*	------------------ Funktionen ------------------ */		
+
+
+// Funktion die wichtige sachen inizialisiert
 function userInit() {
-	android = false;
 	
-	version = "0.9";
+	// (ACHTUNG muss auch in script.js geändert werden)
+	// Angabe ob fuer Android oder nicht
+	var android = false;
+	// Versionsangabe
+	version = "0.91";
 	
 	document.getElementById("versionId").firstChild.data = version;
 	
@@ -43,8 +42,8 @@ function userInit() {
 function userLogin(){
 	log("userLogin wird gestartet");
 	
-	password = document.getElementById("passwordId").value;
-	loginName = document.getElementById("loginNameId").value;
+	var password = document.getElementById("passwordId").value;
+	var loginName = document.getElementById("loginNameId").value;
 
 	if(loginName == null || loginName == ""){
 		alert("Bitte geben sie einen Loginnamen ein");	
@@ -53,7 +52,6 @@ function userLogin(){
 		alert("Bitte geben sie ein Passwort ein");
 		log("Kein Passwort eingegeben");
 	}else{
-		var logedin = false;
 		
 		$.post(urlString + "speedtrack/STLoginServlet",
 				  { login: loginName, passwd: password },
@@ -75,6 +73,7 @@ function userLogin(){
 // Funktion die den User ausloggt
 function userLogout(){
 	log("userLogout wird gestartet");
+	
     $.ajax({
     	type: "POST",
 		contentType: "application/json;",
@@ -85,15 +84,18 @@ function userLogout(){
     		location.href='index.html';
     	}
     });
+    
     log("userLogout wird beendet");
 }
 
-// Funktion die die Userregistrierrungsdaten versendet
+// Funktion die die Userregistrierungsdaten versendet
 function registrationCommit(){
 	log("registrationCommit wird gestartet");
 	
+	// Zurücksetzen der Fehlerfarben
 	initRegistry();
 	
+	// Registrierungsanfrage absenden
 	$.post(urlString + "speedtrack/STRegistrationServlet",
 		{   action: "write",
 			login: document.getElementById("regNameId").value, 
@@ -138,15 +140,13 @@ function registrationCommit(){
 	log("registrationCommit wird beendet");
 }
 
-//
-//{"errors":{"pass2":"Unvollständige Eingabe!","pass1":"Unvollständige Eingabe!",
-//	"login":"Unvollständige Eingabe!","email":"Unvollständige Eingabe!"},"message":"","success":false}
-
 // Funktion die ein neues Password beantraegt
 function newPassword(){
 	log("newPassword wird gestartet");	
+	
+	// Passwordanfrage absenden
 	$.post(urlString + "speedtrack/STForgotPasswordServlet",
-			{ login: document.getElementById("forgetNameId").value },
+			{ login: document.getElementById("forgetPasswordId").value },
 				function(data){
 					 if(data.success){
 						location.href='indexLoggedIn.html'; 
@@ -155,23 +155,28 @@ function newPassword(){
 				}
 			}, "json"
 	);
+	
 	log("newPassword wird beendet");
 }
 
-// Funktion die den User weiterleitet
-function acceptInfo(){
-	location.href='indexRegistration.html';
-}
+//// Funktion die den User weiterleitet
+//function acceptInfo(){
+//	location.href='indexRegistration.html';
+//}
+//
+//// Funktion die den User weiterleitet
+//function goBack(){
+//	location.href='index.html';
+//}
 
-// Funktion die den User weiterleitet
-function goBack(){
-	location.href='index.html';
-}
-
-// Funktion die die Farben der Lables auf schwarz setzt
+// Funktion die die Farben der Registrierungslables auf schwarz setzt
 function initRegistry() {
+	log("initRegistry wird gestartet");
+	
 	document.getElementById("loginNameLableId").setAttribute("style", "color:black");
 	document.getElementById("passwordLableId1").setAttribute("style", "color:black");
 	document.getElementById("passwordLableId2").setAttribute("style", "color:black");
 	document.getElementById("emailLableId").setAttribute("style", "color:black");
+	
+	log("initRegistry wird beendet");
 }
