@@ -84,7 +84,7 @@ function initialize() {
 	
 	// Einstellung der Versionsnummer und ob es Android ist oder nicht
 	isAndroidPhone = false;
-	version = "0.91";
+	version = "1.0";
 	
 	// anzeigen der Versionsnummer
 	document.getElementById("versionId").firstChild.data = version;

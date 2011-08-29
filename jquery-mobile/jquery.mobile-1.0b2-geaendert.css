@@ -296,6 +296,27 @@
 	font-weight: bold;
 }
 
+/*!
+ * geändert!!! 
+ * Orginal:
+ *
+ * .ui-btn-up-c {
+ *	 border: 1px solid 		#ccc;
+ *   background: 			#eee;
+ *	 font-weight: bold;
+ *	 color: 					#444;
+ *	 text-shadow: 0 1px 1px #f6f6f6;
+ *	 background-image: -webkit-gradient(linear, left top, left bottom, from(#fdfdfd), to(#eee)); 
+ *	 background-image: -webkit-linear-gradient(top, #fdfdfd, #eee); 
+ *	 background-image:    -moz-linear-gradient(top, #fdfdfd, #eee); 
+ *	 background-image:     -ms-linear-gradient(top, #fdfdfd, #eee); 
+ *	 background-image:      -o-linear-gradient(top, #fdfdfd, #eee); 
+ *	 background-image:         linear-gradient(top, #fdfdfd, #eee);
+ * }
+ */
+
+
+
 .ui-btn-up-c {
 	
 		border: 1px solid 		#ccc;
@@ -1031,6 +1052,11 @@ a.ui-link-inherit {
 .ui-header, .ui-footer { display: block; }
 .ui-page .ui-header, .ui-page .ui-footer { position: relative; }
 .ui-header .ui-btn-left { position: absolute; left: 10px; top: .4em;  }
+/*! 
+ * geändert!!! Orginal :
+ *
+ * .ui-header .ui-btn-right { position: absolute; right: 10px; top: .4em; }
+ */
 .ui-header .ui-btn-right { position: absolute; right: -50px; top: .4em; }
 .ui-header .ui-title, .ui-footer .ui-title { min-height: 1.1em; text-align: center; font-size: 16px; display: block; margin: .6em 90px .8em;  padding: 0;  text-overflow: ellipsis; overflow: hidden; white-space: nowrap; outline: 0 !important; }
 
@@ -1475,7 +1501,11 @@ Built by David Kaneda and maintained by Jonathan Stark.
 .ui-controlgroup .ui-btn-icon-notext { width: 30px; height: 30px; text-indent: -9999px; }
 .ui-controlgroup .ui-btn-icon-notext .ui-btn-inner {  padding: 5px 6px 5px 5px; }
 */
-
+/*! 
+ * geändert!!! Orginal :
+ *
+ * @media all and (min-width: 450px){
+ */
 @media all and (min-width: 150px){
 	.ui-controlgroup-label { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 2% 0 0;  }
 	.ui-controlgroup-controls { width: 60%; display: inline-block; } 
@@ -1508,6 +1538,11 @@ Built by David Kaneda and maintained by Jonathan Stark.
 */
 .ui-field-contain { padding: 1.5em 0; margin: 0; border-bottom-width: 1px; overflow: visible; }
 .ui-field-contain:first-child { border-top-width: 0; }
+/*! 
+ * geändert!!! Orginal :
+ *
+ * @media all and (min-width: 450px){
+ */
 @media all and (min-width: 150px){
 	.ui-field-contain { border-width: 0; padding: 0; margin: 1em 0; }
 }	/*
@@ -1541,8 +1576,15 @@ label.ui-select { font-size: 16px; line-height: 1.4;  font-weight: normal; margi
 .ui-selectmenu-list .ui-li .ui-icon { display: block; }
 .ui-li.ui-selectmenu-placeholder { display: none; }
 .ui-selectmenu .ui-header .ui-title { margin: 0.6em 46px 0.8em; }
+/*! 
+ * geändert!!! Orginal :
+ *
+ * @media all and (min-width: 450px){
+ *	label.ui-select { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
+ *	.ui-select { width: 60%; display: inline-block; }
+ * }
+ */
 
-/* Prozentzahl verändert  */ 
 @media all and (min-width: 150px){
 	label.ui-select { display: inline-block;  width: 20%;  margin: 0 20% 0 0; }
 	.ui-select { width: 50%; display: inline-block; }
@@ -1562,6 +1604,18 @@ textarea.ui-input-text { height: 50px; -webkit-transition: height 200ms linear; 
 .ui-input-search input.ui-input-text { border: none; width: 98%; padding: .4em 0; margin: 0; display: block; background: transparent none; outline: 0 !important; }
 .ui-input-search .ui-input-clear { position: absolute; right: 0; top: 50%; margin-top: -14px; }
 .ui-input-search .ui-input-clear-hidden { display: none; }
+
+/*! 
+ * geändert!!! Orginal :
+ *
+ * @media all and (min-width: 450px){
+ *   label.ui-input-text  { vertical-align: top; display: inline-block;  width: 20%;  margin: 0 20% 0 0 }
+ *	 input.ui-input-text, 
+ *	 textarea.ui-input-text, 
+ *	 .ui-input-search { width: 60%; display: inline-block; align: left} 
+ *	 .ui-input-search { width: 50%; }
+ *	 .ui-input-search input.ui-input-text { width: 98%;}
+ */
 
 /* orientation adjustments - incomplete!*/
 @media all and (min-width: 150px){
@@ -1599,6 +1653,11 @@ ol.ui-listview .ui-li-jsnumbering:before { content: "" !important; } /* to avoid
 .ui-li-thumb, .ui-li-icon, .ui-li-content { float: left; margin-right: 10px; }
 
 .ui-li-aside { float: right; width: 50%; text-align: right; margin: .3em 0; }
+/*! 
+ * geändert!!! Orginal :
+ *
+ * @media all and (min-width: 480px){
+ */
 @media all and (min-width: 180px){
 	 .ui-li-aside { width: 45%; }
 }	 
@@ -1631,6 +1690,11 @@ select.ui-slider-switch { display: none; }
 div.ui-slider { position: relative; display: inline-block; overflow: visible; height: 15px; padding: 0; margin: 0 2% 0 20px; top: 4px; width: 66%; }
 a.ui-slider-handle { position: absolute; z-index: 10;  top: 50%; width: 28px; height: 28px; margin-top: -15px; margin-left: -15px; }
 a.ui-slider-handle .ui-btn-inner { padding-left: 0; padding-right: 0; }
+/*! 
+ * geändert!!! Orginal :
+ *
+ *@media all and (min-width: 480px){
+ */
 @media all and (min-width: 180px){
 	label.ui-slider { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
 	div.ui-slider { width: 45%; }

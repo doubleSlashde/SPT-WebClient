@@ -22,7 +22,7 @@ function userInit() {
 	// Angabe ob fuer Android oder nicht
 	var android = false;
 	// Versionsangabe
-	version = "0.91";
+	version = "1.0";
 	
 	document.getElementById("versionId").firstChild.data = version;
 	
