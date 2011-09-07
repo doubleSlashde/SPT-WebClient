@@ -14,12 +14,11 @@
 		<script type="text/javascript" src="jquery-mobile/jquery.mobile-1.0b2.js"></script>
  		<link rel="stylesheet" href="jquery-mobile/jquery.mobile-1.0b2-geaendert.css"/>
 	</head>
-	<body data-theme="d" onload="initialize()" onload ="userInit()" onload="loggedIn()">
-		
+	<body data-theme="d" onload="initialize(); userInit();">
 		<!-- Start of first page (configuration) -->
 		<div data-role="page" id="configPage" data-theme="d">
 			<div data-role="header" data-theme="d">
-				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
 				<h1 class="ui-btn-right">Optionen</h1>
 			</div><!-- /header -->
 			<div data-role="content">	
@@ -28,7 +27,7 @@
 				    <input type="text" id="hardwareId" value="iPhone" />
 				</div>	
 				<div data-role="fieldcontain" data-theme="c">
-					<label for="movementTypeId" class="select" class = "ui-btn-left">Bewegungsart:</label>
+					<label for="movementTypeId" class="select ui-btn-left">Bewegungsart:</label>
 					<select name="movementTypeId" id = "movementTypeId" data-theme="c">
 						<option value ="1">Zu Fuss</option>
 						<option value ="2">Fahrrad</option>
@@ -52,10 +51,9 @@
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#aboutLoggedInPage" data-transition="slide" data-icon="info" data-theme="c">Infos</a></li>	
-						<li><a onclick="userLogout()" data-theme="c">Logout</a></li>
-						<li>
-							<a href="#messurePage" data-icon="arrow-r" data-transition="slide" data-theme="c">Tracken</a> 
-						</li>			
+						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
+						<li><a href="#messurePage" data-icon="arrow-r" data-transition="slide" data-theme="c">Tracken</a> </li>	
+						<li><a href="#messurePage2" data-icon="arrow-r" data-transition="slide" data-theme="c">Speed</a></li>		
 					</ul>
 				</div><!-- /navbar -->
 			</div><!-- /footer -->
@@ -63,8 +61,8 @@
 
 		<!-- Start of next page (messure)-->
 		<div data-role="page" id="messurePage" data-theme="d">
-			<div data-role="header"data-theme="d" >
-				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
+			<div data-role="header" data-theme="d" >
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
 				<h1 class="ui-btn-right">Tracken</h1>
 			</div><!-- /header -->		
 			<div data-role="content">
@@ -84,12 +82,42 @@
 			<div data-role="footer" data-theme="d" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
+						<li><a href="#configPage"  data-icon="gear" data-transition="slide" data-direction="reverse" data-theme="c">Einstellung</a> </li>
+						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
+						<li><a href="#runningMessurePage"  onclick="startIntervalMeasure(true, true)" data-icon="arrow-r" data-transition="slide" data-theme="c">Starten</a> </li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<!-- Start of next page (messure2)-->
+		<div data-role="page" id="messurePage2" data-theme="d">
+			<div data-role="header" data-theme="d" >
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
+				<h1 class="ui-btn-right">Speed</h1>
+			</div><!-- /header -->		
+			<div data-role="content">
+				<p>
+					<b>Hallo </b>
+					<b id="nameOfUser"> </b><br>
+				</p>
+				<p>Wichtig: </p>
+				<ul>
+					<li>kann zu sehr hohem Datenaufkommen führen</li>
+					<li>das benutzen der App läd permanent  Daten herunter</li>
+					<li>die App darf während einer Messung nicht beendet werden</li>
+					<li>während der Messung sollten keine anderen Sachen mit dem Telefon gemacht werden</li>
+				</ul>
+			</div><!-- /content -->
+			<div data-role="footer" data-theme="d" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
 						<li>
 							<a href="#configPage"  data-icon="gear" data-transition="slide" data-direction="reverse" data-theme="c">Einstellung</a> 
 						</li>
-						<li><a onclick="userLogout()" data-theme="c">Logout</a></li>
+						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
 						<li>
-							<a href="#runningMessurePage"  onclick="startIntervalMeasure(true)" data-icon="arrow-r" data-transition="slide" data-theme="c">Starten</a> 
+							<a href="#runningMessurePage2"  onclick="startIntervalMeasure(true, false)" data-icon="arrow-r" data-transition="slide" data-theme="c">Start</a> 
 						</li>
 					</ul>
 				</div><!-- /navbar -->
@@ -98,9 +126,9 @@
 
 		<!-- Start of runningMessure page -->
 		<div data-role="page" id="runningMessurePage" data-theme="d">
-			<div data-role="header"data-theme="d" >
-				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
-				<img src="picture/speedTrackMovement.gif" width = "125 pixels" class="ui-btn-right" style="margin-right: 15%;"> 
+			<div data-role="header" data-theme="d" >
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
+				<img alt="Horizontal ajaxloader" src="picture/speedTrackMovement.gif" width = "125" class="ui-btn-right" style="margin-right: 15%;"> 
 			</div><!-- /header -->		
 			<div data-role="content">
 				<ul data-role="listview" data-inset="true" data-theme="c">
@@ -112,7 +140,7 @@
 						<b>Downloadrate: </b>
 						<div class = "ui-li-count">
 							<b id="downloadRateOfTracking">0</b> 
-							<b>Byte/s</b>
+							<b>KB/s</b>
 						</div>
 					</li>
 					<li>
@@ -134,7 +162,51 @@
 					</li>
 				</ul>	
 				<div>
-					<img id="loadPictureId" src="picture/loader.gif" style="position: relative; top: 50%; left: 50%; margin: 8px; margin-left: -16px;"> 
+					<img alt="Circle ajaxloader" id="loadPictureId" src="picture/loader.gif" style="position: relative; top: 50%; left: 50%; margin: 8px; margin-left: -16px;"> 
+				</div>
+			</div><!-- /content -->
+			<div data-role="footer" data-theme="d" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a href="#reportPage" onclick="stopMeasure()" data-icon="arrow-l" data-direction="reverse" data-theme="c">Stoppen</a> 
+						</li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<!-- Start of runningMessure2 page -->
+		<div data-role="page" id="runningMessurePage2" data-theme="d">
+			<div data-role="header" data-theme="d" >
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
+				<img alt="Horizontal ajaxloader" src="picture/speedTrackMovement.gif" width = "125" class="ui-btn-right" style="margin-right: 15%;"> 
+			</div><!-- /header -->		
+			<div data-role="content">
+				<ul data-role="listview" data-inset="true" data-theme="c">
+					<li>
+						<b>Anzahl Messungen: </b>
+						<b id="numberOfTracks2" class = "ui-li-count">0</b>
+					</li>
+					<li>
+						<b>Downloadrate: </b>
+						<div class = "ui-li-count">
+							<b id="downloadRateOfTracking2">0</b> 
+							<b>KB/s</b>
+						</div>
+					</li>
+					<li>
+						<b>Latenz: </b>
+						<b id="latencyOfTracking2" class = "ui-li-count">0</b>
+						<b>ms</b>
+					</li>
+					<li>
+						<b>Status: </b>
+						<b id="stateOfTracking" class = "ui-li-count">Messung läuft..</b>
+					</li>
+				</ul>	
+				<div>
+					<img alt="Circle ajaxloader" id="loadPictureId" src="picture/loader.gif" style="position: relative; top: 50%; left: 50%; margin: 8px; margin-left: -16px;"> 
 				</div>
 			</div><!-- /content -->
 			<div data-role="footer" data-theme="d" data-position="fixed">
@@ -151,7 +223,7 @@
 		<!-- Start of report page -->
 		<div data-role="page" id="reportPage" data-theme="d">
 			<div data-role="header" data-theme="d" data-position="inline">
-				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
 				<h1 class="ui-btn-right">Bericht</h1>
 			</div><!-- /header -->		
 			<div data-role="content" >
@@ -180,7 +252,7 @@
 		<!-- Start of About page LoggedOut(Info)-->
 		<div data-role="page" id="aboutLoggedInPage" data-theme="d">
 			<div data-role="header" data-theme="d">
-				<img src="picture/speedtracklogo.png" width = "125 pixels" align = "middle" > 
+				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" align = "middle" > 
 				<h1 class="ui-btn-right">Infos</h1>
 			</div><!-- /header -->
 			<div data-role="content">
@@ -208,7 +280,7 @@
 			<div data-role="footer" data-theme="d" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#configPage" data-transition="slide" data-icon="arrow-r" data-theme="c" data-direction="reverse">Zurück</a></li>
+						<li><a href="#configPage" data-transition="slide" data-icon="arrow-l" data-theme="c" data-direction="reverse">Zurück</a></li>
 					</ul>
 				</div><!-- /navbar -->
 			</div><!-- /footer -->
