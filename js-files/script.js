@@ -386,7 +386,7 @@ function intervalMeasure(p_trackmode) {
 		
 		if(p_trackmode) document.getElementById("numberOfTracks").firstChild.data = numberOfmeasurements;
 		else document.getElementById("numberOfTracks2").firstChild.data = numberOfmeasurements;
-		
+			
 		if(shortMeasure){
 			aktiv = window.setTimeout(function () {					// Closure-Funktion: Schließt die lokale Funktionsvaribale ein,
 				intervalMeasure(p_trackmode);						// konserviert sie und übergibt diese wieder an die Interval Funktion
@@ -396,15 +396,11 @@ function intervalMeasure(p_trackmode) {
 				intervalMeasure(p_trackmode);
 			}, 30000); 
 		}
-			
 	} else {
 		// Messung wurde abgebrochen
-			
 		log("Es darf nicht mehr gemessen werden");
-			
 		window.clearTimeout(aktiv);
 	}
-	
 	log("intervalMeasure wurde beendet.");
 }
 
@@ -431,43 +427,46 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	
 	var latency = 0;									// Variable für die Latenzzeit
 	var downloadRate = 0;								// Variable für die Downloadrate
-	var datasize;										// Größe der Datei in kb -> Berechnung der Downloadrate
+	var datasize = 0;										// Größe der Datei in kb -> Berechnung der Downloadrate
 	
 	if (p_dataUrlString == "url50") datasize = 50;			// setze Größe durch Url
 	else if (p_dataUrlString == "url100") datasize = 100;
 	else if (p_dataUrlString == "url150") datasize = 150;
 	
-	// Downloadrate Berechnen
-	var time = 0;
-	time = ((downloadTimeSum)) / 1000.0; 				//sec
+	if(downloadTimeSum != null) {
+		// Downloadrate Berechnen
+		var time = 0;
+		time = ((downloadTimeSum)) / 1000.0; 				//sec
 
-	if (time != 0){
-		if(shortMeasure){								// in Byte pro sec da es so auf HP steht
-			downloadRate = ((datasize/time));			// Normale Messungen, Angabe in KB/s (Bytes/s = downloadRate*1000)
-			
-			latency = ((latencyTimeSum ) / 2); 			// milli sec
-		}else{
-			downloadRate = ((datasize/time));			// "3er" Messungen
-			
-			latency = ((latencyTimeSum ) / 3 / 2); 		// milli sec
+		if (time != 0){
+			if(shortMeasure){
+				downloadRate = ((datasize/time));			// Normale Messungen, Angabe in KB/s (Bytes/s = downloadRate*1000)
+				
+				latency = ((latencyTimeSum ) / 2); 			// milli sec
+			}else{
+				downloadRate = ((datasize/time));			// "3er" Messungen
+				
+				latency = ((latencyTimeSum ) / 3 / 2); 		// milli sec
+			}
+		} else{
+			downloadRate = 0;								// wenn time == 0 muss ein Fehler passiert sein!!!!
+			latency = 0;
 		}
-	} else{
-		downloadRate = 0;								// wenn time == 0 muss ein Fehler passiert sein!!!!
-	}
-	
-	// Runden von der Ergebnisse
-	var downloadRateEnd = Math.round(downloadRate); 
-	var latencyEnd = Math.round(latency); 
+		
+		// Runden von der Ergebnisse
+		var downloadRateEnd = Math.round(downloadRate); 
+		var latencyEnd = Math.round(latency);
+	} 
 	
 	// Ergebnisse abspeichern
 	var textResultNew = textResult + downloadRateEnd + "|" + latencyEnd + "|" + originLat + "|" + originLng + "|" + timeStamp + "\r";
 	textResult = textResultNew;
 	
+	// Ergebnisse abspeichern für Email
+	textResultNew = textResultMail + downloadRateEnd + "|" + latencyEnd + "|" + originLat + "|" + originLng + "|" + timeStamp + "%0A";
+	textResultMail = textResultNew;
+	
 	if(p_trackmode) {
-		// Ergebnisse abspeichern für Email
-		textResultNew = textResultMail + downloadRateEnd + "|" + latencyEnd + "|" + originLat + "|" + originLng + "|" + timeStamp + "%0A";
-		textResultMail = textResultNew;
-		
 		// zeige Längen und Breitengrad
 		document.getElementById("latitudeId").firstChild.data = originLat;
 		document.getElementById("longitudeId").firstChild.data = originLng;
@@ -524,20 +523,22 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 		now = new Date();
 		timeStamp = now.getTime();
 	
-		if(shortMeasure){
+		if(shortMeasure) {
 			log("Messung mit nur einem Punkt starten");
 			
 			// Downloadzeit berechnen
-			getDownloadTimeShort(url100);   
-			// Latenzzeit berechnen
-			getLatencyShort(url100);		
-		}else{
+			getDownloadTimeShort(url100, p_trackmode);
+			if(downloadTimeSum != null) {
+				// Latenzzeit berechnen
+				getLatencyShort(url100);
+			}
+		} else {
 			log("Messung mit drei Punkten starten");
 			
+			// Latenzzeit berechnen
+			getLatency(); 
 			// Downloadzeit berechnen
 			getDownloadTime(); 
-			// Latenzzeit berechnen
-			getLatency();
 		}
 		
 		// Werte ausgeben
@@ -556,38 +557,38 @@ function getLatencyShort(p_dataUrl)					// Parameter enthält URL zur Datei und 
 	
 		url = p_dataUrl;
 		
-		// um Request abzufangen
-		xhr.onreadystatechange  = function()
-		{ 
-			if(xhr.readyState  == 4)
-			{
-				log("in redyState Block drin...");
-				
-				if(xhr.status  == 200){
+			// um Request abzufangen
+			xhr.onreadystatechange  = function()
+			{ 
+				if(xhr.readyState  == 4)
+				{
+					log("in redyState Block drin...");
 					
-					// ok Zeit stoppen
-					
-					endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
-					latencyTimeEnd = endTimeHelp.getTime();
-					
-					latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStart);
-					
-					finLatencyMeasure = true;
-					showNotLoadImg();
-					
-					log("latencyTimeEnd wurde gemessen");
+					if(xhr.status  == 200){
+						
+						// ok Zeit stoppen
+						
+						endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
+						latencyTimeEnd = endTimeHelp.getTime();
+						
+						latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStart);
+						
+						finLatencyMeasure = true;
+						showNotLoadImg();
+						
+						log("latencyTimeEnd wurde gemessen");
+					}
+					else {        
+						// Zeige Status
+						document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
+						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+						
+						log("Fehler, Latenz konnte nicht berechnet werden");
+		            	log("Fehler!!! Status : " + xhr.status);
+						// Fehler ausgeben
+					}
 				}
-				else {        
-					// Zeige Status
-					document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
-					document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-					
-					log("Fehler, Latenz konnte nicht berechnet werden");
-	            	log("Fehler!!! Status : " + xhr.status);
-					// Fehler ausgeben
-				}
-			}
-		}; 
+			}; 
 		
 		xhr.open("HEAD", url, false); 				// soll nur auf Header holen, und synchron sein
 		
@@ -657,45 +658,60 @@ function getLatency()
 
 
 // Funktion die die Downloadzeit berechnet mit Ajax und fuer eine Messung
-function getDownloadTimeShort(p_dataUrl)				// Gleiche Funktion wie oben, jedoch mit Ajax und nicht direct mit XHR
+function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie oben, jedoch mit Ajax und nicht direct mit XHR
 { 														// Parameter gibt Datei an, Bsp. url50
 	log("getDownloadTime wurde aufgerufen.");
-		
-		// start measuring
-		startTimeHelp = new Date();
-		downloadTimeStart = startTimeHelp.getTime();
-		
-		$.ajax({
-			type: "GET",
-			url: p_dataUrl,
-			async: false,
-			cache: false,			// wichtig da es sonst aus cach geladen wird
-			dataType: "text",
-			success: function(data) {
-				
-				// request funktuion wenn die 50 kilobyte runtergeladen wurden
-				
-				endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
-				downloadTimeEnd = endTimeHelp.getTime();
-				
-				downloadTimeSum = downloadTimeSum + (downloadTimeEnd - downloadTimeStart);
-							
-				finDownloadMeasure = true;
-				showNotLoadImg();
-							
-				log("downloadTimeEnd wurde gemessen");				
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				// Zeige Status
-				document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Downloadrate";
-				document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-				
-				log("Fehler mit dem runterlaen der datei" + jqXHR + textStatus + errorThrown);
-				log("jqXHR: " + jqXHR);
-				log("textStatus: " + textStatus);
-				log("errorThrown: " +errorThrown);
-			}
-		}).responseText;
+	
+			// start measuring
+			startTimeHelp = new Date();
+			downloadTimeStart = startTimeHelp.getTime();
+			
+			$.ajax({
+				type: "GET",
+				url: p_dataUrl,
+				async: false,
+				cache: false,			// wichtig da es sonst aus cache geladen wird
+				dataType: "text",
+				success: function(data) {
+					
+					// request funktuion wenn die 50 kilobyte runtergeladen wurden
+					
+					endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
+					downloadTimeEnd = endTimeHelp.getTime();
+					
+					downloadTimeSum = downloadTimeSum + (downloadTimeEnd - downloadTimeStart);
+								
+					finDownloadMeasure = true;
+					showNotLoadImg();
+								
+					log("downloadTimeEnd wurde gemessen");				
+				},
+				error: function(jqXHR, textStatus, errorThrown){	
+					// Falls keine Internetverbindung besteht gibt 
+					// XHR einen NETWORK_ERR zurück (code: 19 bzw. 101) (Webkit/Safari)
+					// "0x80004005 (NS_ERROR_FAILURE)" bzw. "0x80040111 (NS ERROR NOT AVAILABLE)" Firefox
+					if(errorThrown.code == 19 || errorThrown.code == 101 ||
+					  (errorThrown.message.search("0x80004005") ||  errorThrown.message.search("0x80040111")) != -1) {
+						downloadTimeSum = null;
+						if(p_trackmode) {
+							document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
+							document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+						} else {
+							document.getElementById("stateOfTracking2").firstChild.data = "Keine Internetverbindung?";
+							document.getElementById("stateOfTracking2").setAttribute("style", "color:red");
+						}
+					} else {
+						// Zeige Status
+						document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Downloadrate";
+						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+					}
+					
+					log("Fehler mit dem runterlaen der datei" + jqXHR + textStatus + errorThrown);
+					log("jqXHR: " + jqXHR);
+					log("textStatus: " + textStatus);
+					log("errorThrown: " +errorThrown);
+				}
+			}).responseText;
 	
 	log("getDownloadTime wurde beendet.");
 } 
