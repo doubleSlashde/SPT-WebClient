@@ -148,7 +148,7 @@ function geoInit() {
 function geoStart() {	
 	log("geoStart wird aufgerufen");
 	
-	if(navigator.geolocation){
+	if(navigator.geolocation) {
 		// geo ist an
 		navigator.geolocation.getCurrentPosition(geoCallback, geoErrorCallback, {
 			enableHighAccuracy: true,
@@ -161,7 +161,7 @@ function geoStart() {
 //		geolocationStatus = true;
 		
 	    log("geo ist an, der Aktuelle Ort wird als Start gewählt");
-	}else{
+	} else {
 		// Zeige Status
 		document.getElementById("stateOfTracking").firstChild.data = "Geolocation geht nicht";
 		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
@@ -190,7 +190,7 @@ function geoCallback(position) {
 	var lngRounded = (Math.round(c.longitude *1000 *1000))/1000000; 
 	
 	// ueberpruefen ob sich die Koordinaten geaendert haben
-	if(latRounded == originLat && lngRounded == originLng){
+	if(latRounded == originLat && lngRounded == originLng) {
 		// Koordinaten haben sich nicht geaendert, Fehler anzeigen
 		document.getElementById("stateOfTracking").firstChild.data = "keine neuen Koordinaten";
 		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
@@ -200,7 +200,7 @@ function geoCallback(position) {
 		// Punkt wird nicht gezählt
 		geolocationStatus = false;
 		
-	}else{
+	} else {
 		// Koordinaten haben sich geaendert, in origin eintragen
 		originLat = latRounded;
 		originLng = lngRounded;
@@ -369,8 +369,6 @@ function startIntervalMeasure(measureOption, p_trackmode) {
 function intervalMeasure(p_trackmode) {
 	log("intervalMeasure wurde aufgerufen.");
 	
-	//alert(p_trackmode);
-	
 	if(!finish){
 		// es kommt noch eine Messung
 		
@@ -425,38 +423,42 @@ function stopMeasure() {
 function printTrack(p_dataUrlString, p_trackmode) {
 	log("printTrack wurde aufgerufen.");
 	
-	var latency = 0;									// Variable für die Latenzzeit
+	var latency = 0;									// Variable für die Latenzzeit, wird an Upload Servlet übergeben
 	var downloadRate = 0;								// Variable für die Downloadrate
-	var datasize = 0;										// Größe der Datei in kb -> Berechnung der Downloadrate
+	var datasize = 0;									// Größe der Datei in kb -> Berechnung der Downloadrate
+	var latencyShow = null;									// Wert der im Frontend angezeigt wird
 	
 	if (p_dataUrlString == "url50") datasize = 50;			// setze Größe durch Url
 	else if (p_dataUrlString == "url100") datasize = 100;
 	else if (p_dataUrlString == "url150") datasize = 150;
 	
-	if(downloadTimeSum != null) {
+	if(downloadTimeSum != 0) {
 		// Downloadrate Berechnen
 		var time = 0;
 		time = ((downloadTimeSum)) / 1000.0; 				//sec
 
 		if (time != 0){
-			if(shortMeasure){
+			if(shortMeasure) {
 				downloadRate = ((datasize/time));			// Normale Messungen, Angabe in KB/s (Bytes/s = downloadRate*1000)
 				
 				latency = ((latencyTimeSum ) / 2); 			// milli sec
-			}else{
+			} else {
 				downloadRate = ((datasize/time));			// "3er" Messungen
 				
 				latency = ((latencyTimeSum ) / 3 / 2); 		// milli sec
 			}
-		} else{
-			downloadRate = 0;								// wenn time == 0 muss ein Fehler passiert sein!!!!
-			latency = 0;
-		}
-		
-		// Runden von der Ergebnisse
-		var downloadRateEnd = Math.round(downloadRate); 
-		var latencyEnd = Math.round(latency);
-	} 
+		} 
+	} else {
+		downloadRate = 0;
+		latency = 0;								// Wert der an das Upload Serlver übergeben wird (muss Zahl sein)
+		latencyShow = '—';							// Wert der im Frontend angezeigt wird
+	}
+	
+	// Runden von der Ergebnisse
+	var downloadRateEnd = Math.round(downloadRate); 
+	var latencyEnd = Math.round(latency);
+	
+	if(latencyShow == null) latencyShow = latencyEnd;
 	
 	// Ergebnisse abspeichern
 	var textResultNew = textResult + downloadRateEnd + "|" + latencyEnd + "|" + originLat + "|" + originLng + "|" + timeStamp + "\r";
@@ -473,11 +475,11 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	
 		// zeige Latenzzeit und Downloadzeit an
 		document.getElementById("downloadRateOfTracking").firstChild.data = downloadRateEnd;
-		document.getElementById("latencyOfTracking").firstChild.data = latencyEnd;
+		document.getElementById("latencyOfTracking").firstChild.data = latencyShow;
 	} else {
 		// zeige Latenzzeit und Downloadzeit an
 		document.getElementById("downloadRateOfTracking2").firstChild.data = downloadRateEnd;
-		document.getElementById("latencyOfTracking2").firstChild.data = latencyEnd;
+		document.getElementById("latencyOfTracking2").firstChild.data = latencyShow;
 	}
 	
 	// zeige werte in Log
@@ -498,11 +500,11 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 
 	if(p_trackmode) {
 		// Zeige Status und Anzahl Messungen
-		if(numberOfmeasurements < 50){
+		if(numberOfmeasurements < 50) {
 			document.getElementById("stateOfTracking").setAttribute("style", "color:black");
 			document.getElementById("numberOfTracks").setAttribute("style", "color:red");			
 			document.getElementById("stateOfTracking").firstChild.data = "Tracking läuft, nicht unterbrechen";	
-		}else{
+		} else {
 			document.getElementById("stateOfTracking").setAttribute("style", "color:green");
 			document.getElementById("numberOfTracks").setAttribute("style", "color:green");
 			document.getElementById("stateOfTracking").firstChild.data = "Tracking kann gesendet werden";	
@@ -512,7 +514,7 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 		geoStart();
 		
 		// schauen ob Geoloaction an und ob es richtig gemessen hat
-		if(!geolocationStatus){
+		if(!geolocationStatus) {
 			// Fehler mit Geoloction!!!
 			document.getElementById("stateOfTracking").setAttribute("style", "color:red");
 			return;
@@ -528,10 +530,10 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 			
 			// Downloadzeit berechnen
 			getDownloadTimeShort(url100, p_trackmode);
-			if(downloadTimeSum != null) {
+			if(downloadTimeSum != 0) {
 				// Latenzzeit berechnen
 				getLatencyShort(url100);
-			}
+			} else latencyTimeSum = 0;
 		} else {
 			log("Messung mit drei Punkten starten");
 			
@@ -692,7 +694,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					// "0x80004005 (NS_ERROR_FAILURE)" bzw. "0x80040111 (NS ERROR NOT AVAILABLE)" Firefox
 					if(errorThrown.code == 19 || errorThrown.code == 101 ||
 					  (errorThrown.message.search("0x80004005") ||  errorThrown.message.search("0x80040111")) != -1) {
-						downloadTimeSum = null;
+						downloadTimeSum = 0;
 						if(p_trackmode) {
 							document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
 							document.getElementById("stateOfTracking").setAttribute("style", "color:red");
