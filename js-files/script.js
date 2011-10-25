@@ -86,31 +86,29 @@ function initialize() {
 	
 	// Einstellung der Versionsnummer und ob es Android ist oder nicht
 	isAndroidPhone = false;
-	version = "1.0";
+	version = "1.0.0";
 	
 	// anzeigen der Versionsnummer
 	document.getElementById("versionId").firstChild.data = version;
 	
-	if(isAndroidPhone){
+	if(isAndroidPhone) {
 		// für Android	
 		document.getElementById("platformId").firstChild.data = "Android App";
 		document.getElementById("hardwareId").value = "Android App";
 		urlString = "http://speedtracks.org/";		
 		
-	}else{
+	} else {
 		// für lokales	
 		document.getElementById("platformId").firstChild.data = "Web App";
 		document.getElementById("hardwareId").value = "Web App";
-		//urlString = "../";	
+		urlString = "../";														// Homepage und Lokal
 		//urlString = "http://speedtracks.org/";	
-		urlString = "./downloadFiles/";
 	}
 					
-	// URL von Downloadpacket welches runtergeladen werden soll		
-	url50 	= urlString + "speedtrack-webclient/downloadFiles/50kb.txt";
-	//url100 	= urlString + "speedtrack-webclient/downloadFiles/100kb.txt";
-	url100 	= urlString + "100kb.txt";
-	url150 	= urlString + "speedtrack-webclient/downloadFiles/150kb.txt";
+	// URL von Downloadpacket welches runtergeladen werden soll	
+	url50   = urlString + "client/downloadFiles/50kb.txt";
+	url100 	= urlString + "client/downloadFiles/100kb.txt";
+	url150 	= urlString + "client/downloadFiles/150kb.txt";	
 
 	// Array in welches die Werte reingeschrieben werden um Überschneidungen duch Multithreading zu vermeiden
 	latencyTimeStartArray = new Array();
@@ -326,7 +324,7 @@ function initSpeedTracker(p_trackmode) {
 	numberOfmeasurements = 0;
 	
 	if(p_trackmode) { document.getElementById("numberOfTracks").firstChild.data = numberOfmeasurements; }
-	else { document.getElementById("numberOfTracks2").firstChild.data = numberOfmeasurements; }
+	else { document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements; }
 	document.getElementById("downloadRateOfTracking").firstChild.data = "0";
 	document.getElementById("latencyOfTracking").firstChild.data = "0";
 	document.getElementById("latitudeId").firstChild.data = "Breitengrad";
@@ -375,7 +373,8 @@ function intervalMeasure(p_trackmode) {
 		log("Neue Messung durchführen");
 
 		// Ladegrafik anzeigen
-		document.getElementById("loadPictureId").setAttribute("style", "visibility:visible; position:relative; top: 50%; left:50%; margin: 8px; margin-left:-16px");
+		document.getElementById("loadPictureTrack").setAttribute("style", "visibility:visible; position:relative; top: 50%; left:50%; margin: 8px; margin-left:-16px");
+		document.getElementById("loadPictureSpeed").setAttribute("style", "visibility:visible; position:relative; top: 50%; left:50%; margin: 8px; margin-left:-16px");
 
 		finDownloadMeasure = false;
 		finLatencyMeasure = false;
@@ -383,7 +382,7 @@ function intervalMeasure(p_trackmode) {
 		run(p_trackmode);
 		
 		if(p_trackmode) document.getElementById("numberOfTracks").firstChild.data = numberOfmeasurements;
-		else document.getElementById("numberOfTracks2").firstChild.data = numberOfmeasurements;
+		else document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements;
 			
 		if(shortMeasure){
 			aktiv = window.setTimeout(function () {					// Closure-Funktion: Schließt die lokale Funktionsvaribale ein,
@@ -478,8 +477,8 @@ function printTrack(p_dataUrlString, p_trackmode) {
 		document.getElementById("latencyOfTracking").firstChild.data = latencyShow;
 	} else {
 		// zeige Latenzzeit und Downloadzeit an
-		document.getElementById("downloadRateOfTracking2").firstChild.data = downloadRateEnd;
-		document.getElementById("latencyOfTracking2").firstChild.data = latencyShow;
+		document.getElementById("downloadRateOfSpeed").firstChild.data = downloadRateEnd;
+		document.getElementById("latencyOfSpeed").firstChild.data = latencyShow;
 	}
 	
 	// zeige werte in Log
@@ -618,7 +617,7 @@ function getLatency()
 			{
 				log("in redyState Block drin...");
 				
-				if(xhr.status  == 200){
+				if(xhr.status  == 200) {
 					
 					// ok zeit stoppen
 					
@@ -664,6 +663,28 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 { 														// Parameter gibt Datei an, Bsp. url50
 	log("getDownloadTime wurde aufgerufen.");
 	
+			if(isAndroidPhone) {
+				var connection = checkConnection();
+				if(connection == "No network connection") {
+					downloadTimeSum = 0;
+					if(p_trackmode) {
+						document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
+						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+					} else {
+						document.getElementById("stateOfSpeed").firstChild.data = "Keine Internetverbindung?";
+						document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
+					} return;
+				} else {
+					if(p_trackmode) {
+						document.getElementById("stateOfTracking").firstChild.data = "Messung läuft..";
+						document.getElementById("stateOfTracking").setAttribute("style", "color: #000");
+					} else {
+						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
+						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
+					}
+				}
+			}
+	
 			// start measuring
 			startTimeHelp = new Date();
 			downloadTimeStart = startTimeHelp.getTime();
@@ -675,8 +696,15 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 				cache: false,			// wichtig da es sonst aus cache geladen wird
 				dataType: "text",
 				success: function(data) {
-					
 					// request funktuion wenn die 50 kilobyte runtergeladen wurden
+					
+					if(p_trackmode) {
+						document.getElementById("stateOfTracking").firstChild.data = "Messung läuft..";
+						document.getElementById("stateOfTracking").setAttribute("style", "color: #000");
+					} else {
+						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
+						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
+					}
 					
 					endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
 					downloadTimeEnd = endTimeHelp.getTime();
@@ -699,8 +727,8 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 							document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
 							document.getElementById("stateOfTracking").setAttribute("style", "color:red");
 						} else {
-							document.getElementById("stateOfTracking2").firstChild.data = "Keine Internetverbindung?";
-							document.getElementById("stateOfTracking2").setAttribute("style", "color:red");
+							document.getElementById("stateOfSpeed").firstChild.data = "Keine Internetverbindung?";
+							document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
 						}
 					} else {
 						// Zeige Status
@@ -816,14 +844,19 @@ function isLogedIn() {
 	
 	$.post(urlString + "speedtrack/STLoginServlet",
 			  { action: "userstatus" },
-			  function(data){
-				  if(data.success){
+			  function(data) {
+				  if(data.success) {
 					  log("Benutzer ist eingeloggt.");
 					  name = data.login;
-					  document.getElementById("nameOfUser").firstChild.data = name; 
-				  }else{
+					  document.getElementById("nameOfUserTrack").firstChild.data = name;
+					  document.getElementById("nameOfUserSpeed").firstChild.data = name;
+					  //send(true);		// Funktion zum Senden des Tracks
+				  } else {
 					  document.getElementById("stateOfTracking").firstChild.data = "Benutzter nicht eingeloggt";
 					  document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+					  
+					  document.getElementById("stateOfSpeed").firstChild.data = "Benutzter nicht eingeloggt";
+					  document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
 					  
 					  log("Benutzer ist ausgeloggt.");
 					  location.href='index.html';					  
@@ -839,8 +872,9 @@ function showNotLoadImg() {
 	log("showNotLoadImg wurde aufgerufen.");
 	
 	// blendet lLadebild aus wenn Messungen beendet sind
-	if(finDownloadMeasure && finLatencyMeasure){
-		document.getElementById("loadPictureId").setAttribute("style", "visibility:hidden");
+	if(finDownloadMeasure && finLatencyMeasure) {
+		document.getElementById("loadPictureTrack").setAttribute("style", "visibility:hidden");
+		document.getElementById("loadPictureSpeed").setAttribute("style", "visibility:hidden");
 		log("Ladebild wurde ausgeblendet.");
 	}
 	
@@ -858,17 +892,17 @@ function transfer(result, name) {
 	
 	$.post(urlString + "speedtrack/STWizardServlet",
 			  { trackString: result, trackName: name, action: "webapp" },
-			  function(data){
+			  function(data) {
 				  	var successString = data.success;
 				  	var messageString = data.message;
 				  
 					errorMessage = messageString;
 					
-		    		if(successString){				// Fehler oder Erfolg anzeigen
+		    		if(successString) {				// Fehler oder Erfolg anzeigen
 		    			document.getElementById("reportSuccess").firstChild.data = "erfolgreich";
 		    			document.getElementById("reportSuccess").setAttribute("style", "color:black");
-		    		}else{
-		    			if(messageString != "Track benötigt mindestens 50 Messpunkte"){
+		    		} else {
+		    			if(messageString != "Track benötigt mindestens 50 Messpunkte") {
 		    				document.getElementById("buttonDiv").setAttribute("style", "visibility:visible");			
 		    			}
 		    			
@@ -880,4 +914,20 @@ function transfer(result, name) {
 			);
 	
 	log("transfer wurde beendet.");
+}
+
+function checkConnection() {
+    var networkState = navigator.network.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]   	= 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.NONE]     = 'No network connection';
+    
+    return states[networkState];
+    //alert('Connection type: ' + states[networkState]);
 }

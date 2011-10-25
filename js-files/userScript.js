@@ -22,15 +22,15 @@ function userInit() {
 	// Angabe ob fuer Android oder nicht
 	var android = false;
 	// Versionsangabe
-	version = "1.0";
+	version = "1.0.0";
 	
 	document.getElementById("versionId").firstChild.data = version;
 	
-	if(android){
+	if(android) {
 		// für Android	
 		document.getElementById("platformId").firstChild.data = "Android App";
 		urlString = "http://speedtracks.org/";
-	}else{
+	} else {
 		// für lokales	
 		document.getElementById("platformId").firstChild.data = "Web App";
 		urlString = "../";
@@ -39,27 +39,28 @@ function userInit() {
 
 
 // Funktion die den User einloggt
-function userLogin(){
+function userLogin() {
 	log("userLogin wird gestartet");
 	
 	var password = document.getElementById("passwordId").value;
 	var loginName = document.getElementById("loginNameId").value;
 
-	if(loginName == null || loginName == ""){
+	if(loginName == null || loginName == "") {
 		alert("Bitte geben sie einen Loginnamen ein");	
 		log("Kein Username eingegeben");
-	}else if(password == null || password == ""){
+	} else if(password == null || password == "") {
 		alert("Bitte geben sie ein Passwort ein");
 		log("Kein Passwort eingegeben");
-	}else{
+	} else {
 		
 		$.post(urlString + "speedtrack/STLoginServlet",
 				  { login: loginName, passwd: password },
-				  function(data){
-					  if(data.success){
+				  function(data) {
+					  if(data.success) {
 						  log("userLogin erfolgreich");
+						  //send(true);			// Sendefunktion des Tracks in script.js
 						  location.href='indexLoggedIn.html'; 
-					  }else{
+					  } else {
 						  log(data.message);
 						  alert(data.message);					  
 					  }
@@ -106,32 +107,32 @@ function registrationCommit(){
 			country: document.getElementById("landId").value, 
 			place: document.getElementById("placeId").value, 
 			aboutme: document.getElementById("aboutMeId").value },
-			function(data){
-				if(data.success){
+			function(data) {
+				if(data.success) {
 					location.href='index.html'; 
-				}else{
-					if(data.message == ""){
+				} else {
+					if(data.message == "") {
 						var resultString = "Folgende Fehler sind aufgetreten: ";
-						if(data.errors.login != null){
+						if(data.errors.login != null) {
 							resultString = resultString + " Bei Loginname: " + data.errors.login ;
 							document.getElementById("loginNameLableId").setAttribute("style", "color:red");
 						}
-						if(data.errors.pass1 != null){
+						if(data.errors.pass1 != null) {
 							resultString = resultString + " Bei Passwort 1: " + data.errors.pass1;
 							document.getElementById("passwordLableId1").setAttribute("style", "color:red");
 						}
-						if(data.errors.pass2 != null){
+						if(data.errors.pass2 != null) {
 							 resultString = resultString + " Bei Password 2: " + data.errors.pass2;	
 								document.getElementById("passwordLableId2").setAttribute("style", "color:red");
 						}
-						if(data.errors.email != null){
+						if(data.errors.email != null) {
 							resultString = resultString + " Bei E-Mail: " +  data.errors.email;
 							document.getElementById("emailLableId").setAttribute("style", "color:red");
-						}else if(resultString == "Folgende Fehler sind aufgetreten: "){							
+						} else if(resultString == "Folgende Fehler sind aufgetreten: ") {							
 							resultString = "Es ist ein unbekannter Fehler aufgetreten";
 						}	
 						alert(resultString);
-					}else{
+					} else {
 						alert(data.message);					  						
 					}
 				}
@@ -141,16 +142,16 @@ function registrationCommit(){
 }
 
 // Funktion die ein neues Password beantraegt
-function newPassword(){
+function newPassword() {
 	log("newPassword wird gestartet");	
 	
 	// Passwordanfrage absenden
 	$.post(urlString + "speedtrack/STForgotPasswordServlet",
 			{ login: document.getElementById("forgetPasswordId").value },
-				function(data){
-					 if(data.success){
+				function(data) {
+					 if(data.success) {
 						location.href='indexLoggedIn.html'; 
-					}else{
+					} else {
 						alert(data.message);					  
 				}
 			}, "json"
