@@ -75,20 +75,19 @@
 					<b>Hallo </b>
 					<b id="nameOfUserTrack"> </b><br>
 				</p>
-				<p>Wichtig: </p>
+				<p>Hinweise: </p>
 				<ul>
-					<li>GPS muss an sein</li>
-					<li>Standortbestimmung über WLAN sollte aktiv sein</li>
-					<li>es müssen mindestens 50 Messungen gemacht werden</li>
-					<li>das benutzen der App läd permanent  Daten herunter</li>
-					<li>die App darf während einer Messung nicht beendet werden</li>
-					<li>während der Messung sollten keine anderen Sachen mit dem Telefon gemacht werden</li>
+					<li>GPS (und WLAN) muss aktiv sein</li>
+					<li>ein Track besteht aus mindestens 50 Messpunkten</li>
+					<li>die App darf während des Trackens nicht beendet werden</li>
+					<li>während des Trackens sollten keine anderen Prozesse aktiv sein</li>
+					<li><font color="red">das Benutzen der App wird nur in Verbindung mit einer Datenflatrate empfohlen!</font></li>
 				</ul>
 			</div><!-- /content -->
 			<div data-role="footer" data-theme="d" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#configPage"  data-icon="gear" data-transition="slide" data-direction="reverse" data-theme="c">Einstellung</a> </li>
+						<li><a href="#configPage"  data-icon="home" data-transition="slide" data-direction="reverse" data-theme="c">Home</a> </li>
 						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
 						<li><a href="#runningMessurePage"  onclick="startIntervalMeasure(true, true)" data-icon="arrow-r" data-transition="slide" data-theme="c">Starten</a> </li>
 					</ul>
@@ -107,19 +106,18 @@
 					<b>Hallo </b>
 					<b id="nameOfUserSpeed"> </b><br>
 				</p>
-				<p>Wichtig: </p>
+				<p>Hinweise: </p>
 				<ul>
-					<li>kann zu sehr hohem Datenaufkommen führen</li>
-					<li>das benutzen der App läd permanent Daten herunter</li>
-					<li>die App darf während einer Messung nicht beendet werden</li>
-					<li>während der Messung sollten keine anderen Sachen mit dem Telefon gemacht werden</li>
+					<li>die App darf während der Messung nicht beendet werden</li>
+					<li>während der Messung sollten keine anderen Prozesse aktiv sein</li>
+					<li><font color="red">das Benutzen der App wird nur in Verbindung mit einer Datenflatrate empfohlen!</font></li>
 				</ul>
 			</div><!-- /content -->
 			<div data-role="footer" data-theme="d" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#configPage"  data-icon="gear" data-transition="slide" data-direction="reverse" data-theme="c">Einstellung</a> 
+							<a href="#configPage"  data-icon="home" data-transition="slide" data-direction="reverse" data-theme="c">Home</a> 
 						</li>
 						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
 						<li>
@@ -248,7 +246,7 @@
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#messurePage" data-icon="arrow-l" data-direction="reverse" data-theme="c">Stoppen</a> 
+							<a href="#messurePage" data-icon="arrow-l" data-direction="reverse" data-theme="c">Zurück</a> 
 						</li>
 					</ul>
 				</div><!-- /navbar -->
@@ -269,7 +267,7 @@
 				<div data-role="navbar">
 					<ul>
 						<li>
-							<a href="#speedPage" data-icon="arrow-l" data-direction="reverse" data-theme="c">Stoppen</a> 
+							<a href="#speedPage" data-icon="arrow-l" data-direction="reverse" data-theme="c">Zurück</a> 
 						</li>
 					</ul>
 				</div><!-- /navbar -->
