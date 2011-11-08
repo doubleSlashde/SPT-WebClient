@@ -5,6 +5,7 @@ var originLat;					// Breitengrad des eigenen Standorts
 var originLng;					// Längengrad des eigenen Standortes
 var geolocationStatus;			// Variable ob alles ok mit Geolocation
 var numberOfGeoCalls;			// Anzahl wie oft geolocation neu aufgerufen wird(fuer Debug)
+var minTrackPoints;				// Mindestanzahl an Messpunkten
 
 // Variablen fuer Latenz und Downloadraten Messung
 var latencyTimeStart;			// Starteit Latenz	
@@ -267,7 +268,7 @@ function stopTimeMeasuret() {
 	endTime = (now.getTime() - startTime)/1000;
 		
 	// Zeige Status
-	if(numberOfmeasurements < 50){
+	if(numberOfmeasurements < minTrackPoints){
 		document.getElementById("stateOfTracking").firstChild.data = "Zu wenig Messungen";
 		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
 		
@@ -302,6 +303,9 @@ function initSpeedTracker(p_trackmode) {
 	log("initSpeedTracker wurde aufgerufen.");
 	
 	logFile = logFile + "%0A" + "%0A" + "%0A" + "Starte neue Aufnahme der Logs : " + "%0A";
+	
+	// Setzt die Anzahl der minimalen Messpunkte
+	minTrackPoints = 20;
 	
 	// Zeit Null setzen
 	downloadTimeStart = 0; 
@@ -499,7 +503,7 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 
 	if(p_trackmode) {
 		// Zeige Status und Anzahl Messungen
-		if(numberOfmeasurements < 50) {
+		if(numberOfmeasurements < minTrackPoints) {
 			document.getElementById("stateOfTracking").setAttribute("style", "color:black");
 			document.getElementById("numberOfTracks").setAttribute("style", "color:red");			
 			document.getElementById("stateOfTracking").firstChild.data = "Tracking läuft, nicht unterbrechen";	
@@ -813,7 +817,7 @@ function send(sendAsMail) {
 function sendReportAsMail() {
 	log("sendMail wurde aufgerufen.");
 	
-		var link = "mailto:speedtrack@doubleSlash.de?"   
+		var link = "mailto:speedtrack.report@doubleslash.de?"   
              + "subject=" + "Track und Logfile der Messung mit Webapp"
              + "&body=" + "Da ein Fehler aufgetreten ist konnte der Benutzer die Messung per Email versenden." + "%0A" + "Es ist Folgender Fehler aufgetreten: " + errorMessage + "%0A" + textResultMail + "%0A" + "%0A" + "%0A" + logFile;
 
@@ -902,7 +906,7 @@ function transfer(result, name) {
 		    			document.getElementById("reportSuccess").firstChild.data = "erfolgreich";
 		    			document.getElementById("reportSuccess").setAttribute("style", "color:black");
 		    		} else {
-		    			if(messageString != "Track benötigt mindestens 50 Messpunkte") {
+		    			if(messageString != "Track benötigt mindestens "+minTrackPoints+" Messpunkte") {
 		    				document.getElementById("buttonDiv").setAttribute("style", "visibility:visible");			
 		    			}
 		    			
