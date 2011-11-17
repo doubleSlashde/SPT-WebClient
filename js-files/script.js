@@ -185,8 +185,8 @@ function geoCallback(position) {
 	
 	var c = position.coords;   
 	
-	var latRounded = (Math.round(c.latitude *1000 *1000))/1000000; 
-	var lngRounded = (Math.round(c.longitude *1000 *1000))/1000000; 
+	var latRounded = (Math.round(c.latitude *1000 *1000))/1000000;
+	var lngRounded = (Math.round(c.longitude *1000 *1000))/1000000;
 	
 	// ueberpruefen ob sich die Koordinaten geaendert haben
 	if(latRounded == originLat && lngRounded == originLng) {
