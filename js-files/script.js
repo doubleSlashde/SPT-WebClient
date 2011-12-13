@@ -176,6 +176,7 @@ function geoStart() {
 }
 
 // Funktion wenn geo erfolgreich
+// Success-Callbackfunktion der Standard Trackmessung
 function geoCallback(position) {	
 	log("geoCallback wird aufgerufen");
     
@@ -216,7 +217,21 @@ function geoCallback(position) {
     log("geoCallback wird beendet");
 }
 
+// Success-Callbackfunktion der zusätzlichen Geolocation Messung
+function extraGeoCallback(position) {
+	log("extraGeoCallback wird aufgerufen");
+	
+	var latitude = position.coords.latitude;
+	var longitude = position.coords.longitude;
+	var accuracy = position.coords.accuracy;
+	if(accuracy > 100) { alert('ungenau'); return; }
+	alert('Position: '+latitude+','+longitude);
+	
+	log("extraGeoCallback wird beendet");
+}
+
 // Funktion für Fehlerbehandlung von geo-Bestimmung
+// Error-Callbackfunktion der Standard Trackmessung
 function geoErrorCallback(error) {
 	log("geoErrorCallback wird aufgerufen");
 	
@@ -247,6 +262,32 @@ function geoErrorCallback(error) {
 	geolocationStatus = false;
 	
 	log("geoErrorCallback wird beendet");
+}
+
+// Error-Callbackfunktion der zusätzlichen Geolocation Messung
+function extraGeoErrorCallback(error) {
+	log("extraGeoErrorCallback wird aufgerufen");
+	
+    // Error-Code auslesen und behandeln	
+	switch (error.code){
+		case error.PERMISSION_DENIED:
+			log("Fehler bei geo-Bestimmung, PERMISSION_DENIED");
+			break;
+		case error.POSITION_UNAVAILABLE:
+			log("Fehler bei geo-Bestimmung, POSITION_UNAVAILABLE");
+			break;
+		case error.TIMEOUT:
+			log("Fehler bei geo-Bestimmung, TIMEOUT");
+			break;
+		case error.UNKNOWN_ERROR:
+			log("Fehler bei geo-Bestimmung, UNKNOWN_ERROR");
+			break;
+		default:
+			log("Fehler bei geo-Bestimmung, Unbekannter fehler");
+		    break;
+	}
+	
+	log("extraGeoErrorCallback wird beendet");
 }
 
 // Funktion die Zeit misst
@@ -530,13 +571,13 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 	
 		if(shortMeasure) {
 			log("Messung mit nur einem Punkt starten");
-			
+			geoThread = true;
 			// Downloadzeit berechnen
 			getDownloadTimeShort(url100, p_trackmode);
-			if(downloadTimeSum != 0) {
+			/*if(downloadTimeSum != 0) {
 				// Latenzzeit berechnen
 				getLatencyShort(url100);
-			} else latencyTimeSum = 0;
+			} else latencyTimeSum = 0;*/
 		} else {
 			log("Messung mit drei Punkten starten");
 			
@@ -547,7 +588,7 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 		}
 		
 		// Werte ausgeben
-		printTrack("url100", p_trackmode);
+		//printTrack("url100", p_trackmode);
 		
 		// Anzahl der Messungen Hochzählen und anzeigen
 		numberOfmeasurements = numberOfmeasurements +1;
@@ -559,50 +600,37 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 function getLatencyShort(p_dataUrl)					// Parameter enthält URL zur Datei und gibt den Namen an Bsp. url50->speedtrack.org/.../50kb.txt
 { 
 	log("getLatency wurde aufgerufen.");
+		
+	startTimeHelp = new Date();					// da sonst bei Threadwechsel die Daten verfälscht werden können
+	latencyTimeStart = startTimeHelp.getTime();
 	
-		url = p_dataUrl;
-		
-			// um Request abzufangen
-			xhr.onreadystatechange  = function()
-			{ 
-				if(xhr.readyState  == 4)
-				{
-					log("in redyState Block drin...");
-					
-					if(xhr.status  == 200){
-						
-						// ok Zeit stoppen
-						
-						endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
-						latencyTimeEnd = endTimeHelp.getTime();
-						
-						latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStart);
-						
-						finLatencyMeasure = true;
-						showNotLoadImg();
-						
-						log("latencyTimeEnd wurde gemessen");
-					}
-					else {        
-						// Zeige Status
-						document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
-						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-						
-						log("Fehler, Latenz konnte nicht berechnet werden");
-		            	log("Fehler!!! Status : " + xhr.status);
-						// Fehler ausgeben
-					}
-				}
-			}; 
-		
-		xhr.open("HEAD", url, false); 				// soll nur auf Header holen, und synchron sein
-		
-		startTimeHelp = new Date();					// da sonst bei Threadwechsel die Daten verfälscht werden können
-		latencyTimeStart = startTimeHelp.getTime();
-		
-		xhr.send(null); 
-		
-	log("getLatency wurde beendet.");
+		$.ajax({
+			type: "HEAD",
+			url: p_dataUrl,
+			async: false,
+			cache: false,
+			success: function(data) {
+				// ok Zeit stoppen
+				endTimeHelp = new Date();		// da sonst bei threadwechsel die daten verfäscht werdenkönnen
+				latencyTimeEnd = endTimeHelp.getTime();
+				
+				latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStart);
+				
+				finLatencyMeasure = true;
+				showNotLoadImg();
+				
+				log("latencyTimeEnd wurde gemessen");
+				log("getLatency wurde beendet.");
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				// Zeige Status
+				document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
+				document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+				
+				log("Fehler, Latenz konnte nicht berechnet werden");
+				log("Error: " + jqXHR + textStatus + errorThrown);
+			}
+		});
 } 
 
 // Funktion die die Latenzzeit berechnet mit fuenf Messungen
@@ -659,6 +687,27 @@ function getLatency()
 	log("getLatency wurde beendet.");
 } 
 
+function extraGeoMeasure2() {
+	log("extraGeoMeasure2 wurde aufgerufen");
+	var options = { enableHighAccuracy: true,
+					timeout: 3000,
+					maximumAge: 1800 };
+	navigator.geolocation.getCurrentPosition(extraGeoCallback, extraGeoErrorCallback, options);
+	window.setTimeout("extraGeoMeasure1()", 1000);
+	log("extraGeoMeasure2 wurde beendet");
+}
+
+
+function extraGeoMeasure1() {
+	log("extraGeoMeasure1 wurde aufgerufen");
+	if(geoThread == true) {
+		if(navigator.geolocation) {
+			window.setTimeout("extraGeoMeasure2()", 1000);
+		}
+	} //else log("geoThread == false");
+	log("extraGeoMeasure1 wurde beendet");
+}
+
 
 
 
@@ -688,7 +737,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					}
 				}
 			}
-	
+			
 			// start measuring
 			startTimeHelp = new Date();
 			downloadTimeStart = startTimeHelp.getTime();
@@ -696,11 +745,12 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 			$.ajax({
 				type: "GET",
 				url: p_dataUrl,
-				async: false,
+				//async: false,
 				cache: false,			// wichtig da es sonst aus cache geladen wird
 				dataType: "text",
 				success: function(data) {
 					// request funktuion wenn die 50 kilobyte runtergeladen wurden
+					geoThread = false;
 					
 					if(p_trackmode) {
 						document.getElementById("stateOfTracking").firstChild.data = "Messung läuft..";
@@ -718,7 +768,14 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					finDownloadMeasure = true;
 					showNotLoadImg();
 								
-					log("downloadTimeEnd wurde gemessen");				
+					log("downloadTimeEnd wurde gemessen");	
+					
+					if(downloadTimeSum != 0) {
+						// Latenzzeit berechnen
+						getLatencyShort(url100);
+					} else latencyTimeSum = 0;
+					
+					printTrack("url100", p_trackmode);
 				},
 				error: function(jqXHR, textStatus, errorThrown){	
 					// Falls keine Internetverbindung besteht gibt 
@@ -745,7 +802,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					log("textStatus: " + textStatus);
 					log("errorThrown: " +errorThrown);
 				}
-			}).responseText;
+			}).responseText; extraGeoMeasure1();			
 	
 	log("getDownloadTime wurde beendet.");
 } 
@@ -764,8 +821,8 @@ function getDownloadTime()				// Gleiche Funktion wie oben, jedoch mit Ajax und 
 		$.ajax({
 			type: "GET",
 			url: url50,
-			async: false,			//wichtig da es sonst nur 1 mal rungergeladen wird
-			cache: false,
+			async: false,
+			cache: false,				//wichtig da es sonst nur 1 mal rungergeladen wird
 			dataType: "text",
 			success: function(data) {
 				
