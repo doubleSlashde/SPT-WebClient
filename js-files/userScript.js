@@ -30,6 +30,7 @@ function userInit() {
 		// für Android	
 		document.getElementById("platformId").firstChild.data = "Android App";
 		urlString = "http://speedtracks.org/";
+		//urlString = "http://carey.ds.de:8080/speedtrack/";
 	} else {
 		// für lokales	
 		document.getElementById("platformId").firstChild.data = "Web App";
@@ -159,16 +160,6 @@ function newPassword() {
 	
 	log("newPassword wird beendet");
 }
-
-//// Funktion die den User weiterleitet
-//function acceptInfo(){
-//	location.href='indexRegistration.html';
-//}
-//
-//// Funktion die den User weiterleitet
-//function goBack(){
-//	location.href='index.html';
-//}
 
 // Funktion die die Farben der Registrierungslables auf schwarz setzt
 function initRegistry() {
