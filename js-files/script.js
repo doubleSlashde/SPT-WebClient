@@ -232,8 +232,11 @@ function extraGeoCallback(position) {
 		log("Geolocation zu ungenau"); 
 		return;
 	}
+	
+	var nowGeo = new Date();
+	var timeStampGeo = nowGeo.getTime();
 	//alert('Position: '+latRoundedGeo+','+lngRoundedGeo);
-	save(downloadRateEnd, latencyEnd, latRoundedGeo, lngRoundedGeo, timeStamp, "geo");
+	save(downloadRateEnd, latencyEnd, latRoundedGeo, lngRoundedGeo, timeStampGeo, "geo");
 	
 	log("extraGeoCallback wird beendet");
 }
@@ -433,11 +436,13 @@ function intervalMeasure(p_trackmode) {
 			aktiv = window.setTimeout(function () {					// Closure-Funktion: Schließt die lokale Funktionsvaribale ein,
 				intervalMeasure(p_trackmode);						// konserviert sie und übergibt diese wieder an die Interval Funktion
 			}, 10000);												// setTimeout("intervalM..(p_trackmode)") verliert die Variable!!
-			if(p_trackmode) {
-				geoThread = true;
-				window.setTimeout("geoThread = false;", 9000);
+			/*if(p_trackmode) {
+				geoThreadP = true;
+					console.log("geoThreadP = true");
+				window.setTimeout("geoThreadP = false;", 9000);
+					console.log("geoThreadP = false in 9 sec");
 				extraGeoMeasure1();
-			}
+			}*/
 		} else {
 			aktiv = window.setTimeout(function () {
 				intervalMeasure(p_trackmode);
@@ -513,7 +518,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	}
 	
 	// Runden von der Ergebnisse
-	downloadRateEnd = Math.round(downloadRate); 
+	downloadRateEnd = Math.round(downloadRate);
 	latencyEnd = Math.round(latency);
 	downloadRateShow = Math.round(downloadRateShow);
 	
@@ -560,7 +565,7 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 		} else {
 			document.getElementById("stateOfTracking").setAttribute("style", "color:green");
 			document.getElementById("numberOfTracks").setAttribute("style", "color:green");
-			document.getElementById("stateOfTracking").firstChild.data = "Tracking kann gesendet werden";	
+			document.getElementById("stateOfTracking").firstChild.data = "Track kann gesendet werden";	
 		}
 		
 		// Koordinaten aktuallisieren
@@ -699,22 +704,26 @@ function getLatency()
 function extraGeoMeasure2() {
 	log("extraGeoMeasure2 wurde aufgerufen");
 	var options = { enableHighAccuracy: true,
-					timeout: 3000,
-					maximumAge: 1800 };
+					timeout: 1000,
+					maximumAge: 1000 };
 	navigator.geolocation.getCurrentPosition(extraGeoCallback, extraGeoErrorCallback, options);
-	window.setTimeout("extraGeoMeasure1()", 1000);
+	window.setTimeout("extraGeoMeasure1()", 2000);
 	log("extraGeoMeasure2 wurde beendet");
 }
 
 
 function extraGeoMeasure1() {
 	log("extraGeoMeasure1 wurde aufgerufen");
-	if(geoThread == true) {
+	if(geoThread == true || geoThreadP == true) {
 		if(navigator.geolocation) {
-			window.setTimeout("extraGeoMeasure2()", 1000);
+			window.setTimeout("extraGeoMeasure2()", 3000);
+			//console.log("geoThread: "+geoThred+" geoThreadP: " +geoThreadP);
 		}
-	} //else log("geoThread == false");
-	log("extraGeoMeasure1 wurde beendet");
+	} else {
+		log("extraGeoMeasure1 wurde beendet");
+		return;
+	}
+	
 }
 
 
@@ -972,14 +981,13 @@ function transfer(result, name) {
 					errorMessage = messageString;
 					
 		    		if(successString) {				// Fehler oder Erfolg anzeigen
-		    			document.getElementById("reportSuccess").firstChild.data = "erfolgreich";
+		    			document.getElementById("reportSuccess").innerText = "Übertragung erfolgreich abgeschlossen.";
 		    			document.getElementById("reportSuccess").setAttribute("style", "color:black");
 		    		} else {
 		    			if(messageString != "Track benötigt mindestens "+minTrackPoints+" Messpunkte") {
 		    				document.getElementById("buttonDiv").setAttribute("style", "visibility:visible");			
 		    			}
-		    			
-		    			document.getElementById("reportSuccess").firstChild.data = "fehlerhaft";
+		    			document.getElementById("reportSuccess").innerText = "Übertragung fehlerfaht.";
 		    			document.getElementById("reportSuccess").setAttribute("style", "color:red");
 		    		}
 		    		if(messageString) {
