@@ -987,7 +987,7 @@ function transfer(result, name) {
 		    			if(messageString != "Track benötigt mindestens "+minTrackPoints+" Messpunkte") {
 		    				document.getElementById("buttonDiv").setAttribute("style", "visibility:visible");			
 		    			}
-		    			document.getElementById("reportSuccess").innerText = "Übertragung fehlerfaht.";
+		    			document.getElementById("reportSuccess").innerText = "Übertragung fehlerhaft.";
 		    			document.getElementById("reportSuccess").setAttribute("style", "color:red");
 		    		}
 		    		if(messageString) {

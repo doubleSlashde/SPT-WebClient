@@ -36,6 +36,9 @@ function userInit() {
 		document.getElementById("platformId").firstChild.data = "Web App";
 		urlString = "../";
 	}
+	
+	// Cookie mit loginName vorhanden? -> setze diesen in das Formular ein
+	if(getCookie('loginName')) document.getElementById("loginNameId").value = getCookie('loginName');
 }
 
 
@@ -53,6 +56,13 @@ function userLogin() {
 		alert("Bitte geben sie ein Passwort ein");
 		log("Kein Passwort eingegeben");
 	} else {
+		
+		// bereite Verfallsdatum für Cookie vor (31 Tage)
+		var cookieExpiry = new Date();
+		cookieExpiry.setTime(cookieExpiry.getTime() + 1000 * 60 * 60 * 24 * 31);
+		
+		// setze Cookie loginName mit dem Wert aus dem Formular und Verfallsdatum
+		setCookie("loginName", loginName, cookieExpiry);
 		
 		$.post(urlString + "speedtrack/STLoginServlet",
 				  { login: loginName, passwd: password },
@@ -171,4 +181,29 @@ function initRegistry() {
 	document.getElementById("emailLableId").setAttribute("style", "color:black");
 	
 	log("initRegistry wird beendet");
+}
+
+// Funktion zum Erzeugen eines Cookies und Setzen seines Werts
+function setCookie(name, value, expiryDate) {
+	document.cookie = escape(name) + "=" + escape(value) + "; path=/" +
+		((expiryDate == null) ? "" : "; expires=" + expiryDate.toGMTString());
+}
+
+// Funktion zum Abrufen eines Cookie-Werts
+function getCookie(name) {
+	var cookieName = name + "=";
+	var documentCookie = document.cookie;
+	var start, end;
+	
+	if(documentCookie.length > 0) {
+		start = documentCookie.indexOf(cookieName);
+		if(start != -1) {
+			start += cookieName.length;
+			end = documentCookie.indexOf(";", start);
+			if(end == -1) end = documentCookie.length;
+			
+			return unescape(documentCookie.substring(start, end));
+		}
+	}
+	return null;
 }
