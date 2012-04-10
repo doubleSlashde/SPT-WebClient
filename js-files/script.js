@@ -95,14 +95,12 @@ function initialize() {
 	if(isAndroidPhone) {
 		// für Android	
 		document.getElementById("platformId").firstChild.data = "Android App";
-		document.getElementById("hardwareId").value = "Android App";
 		urlString = "http://speedtracks.org/";	
 		//urlString = "http://carey.ds.de:8080/speedtrack/";
 		
 	} else {
 		// für lokales	
 		document.getElementById("platformId").firstChild.data = "Web App";
-		document.getElementById("hardwareId").value = "Web App";
 		urlString = "../";														// Homepage und Lokal	
 	}
 					
@@ -152,8 +150,8 @@ function geoStart() {
 		// geo ist an
 		navigator.geolocation.getCurrentPosition(geoCallback, geoErrorCallback, {
 			enableHighAccuracy: true,
-			timeout: 120000,
-			maximumAge: 10000
+			timeout: 4000,
+			maximumAge: 2000
 		});
 		
 //		// Geolocation funktioniert, es kann gemessen werden
@@ -190,10 +188,22 @@ function geoCallback(position) {
 	var latRounded = (Math.round(c.latitude *1000 *1000))/1000000;
 	var lngRounded = (Math.round(c.longitude *1000 *1000))/1000000;
 	
+	var accuracy = position.coords.accuracy;
+	
 	// ueberpruefen ob sich die Koordinaten geaendert haben
 	if(latRounded == originLat && lngRounded == originLng) {
 		// Koordinaten haben sich nicht geaendert, Fehler anzeigen
 		document.getElementById("stateOfTracking").firstChild.data = "keine neuen Koordinaten";
+		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+		document.getElementById("latitudeId").setAttribute("style", "color:red");
+		document.getElementById("longitudeId").setAttribute("style", "color:red");
+		
+		// Punkt wird nicht gezählt
+		geolocationStatus = false;
+		
+	} else if(accuracy > 400) {
+		// Koordinaten sind zu ungenau (konnte keine genaue GPS-Poistion bestimmen)
+		document.getElementById("stateOfTracking").firstChild.data = "GPS-Signal schwach";
 		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
 		document.getElementById("latitudeId").setAttribute("style", "color:red");
 		document.getElementById("longitudeId").setAttribute("style", "color:red");
@@ -228,7 +238,7 @@ function extraGeoCallback(position) {
 	var lngRoundedGeo = (Math.round(cGeo.longitude *1000 *1000))/1000000;
 	
 	var accuracy = position.coords.accuracy;
-	if(accuracy > 100) { 
+	if(accuracy > 150) { 
 		log("Geolocation zu ungenau"); 
 		return;
 	}
@@ -398,6 +408,14 @@ function initSpeedTracker(p_trackmode) {
 // Funktion die eine Intervallmessung startet
 function startIntervalMeasure(measureOption, p_trackmode) {
 	log("startIntervalMeasure wurde aufgerufen.");
+	
+	var hardwareId = document.getElementById("hardwareId").value;
+	if(hardwareId == ""  || hardwareId == "Gerätebezeichnung") {
+		if(isAndroidPhone) {
+			document.getElementById("hardwareId").value = "Android Device";
+		} else document.getElementById("hardwareId").value = "Web Applikation";
+	}
+	//alert(document.getElementById("hardwareId").value);
 	
 	shortMeasure = measureOption;
 	
@@ -704,7 +722,7 @@ function getLatency()
 function extraGeoMeasure2() {
 	log("extraGeoMeasure2 wurde aufgerufen");
 	var options = { enableHighAccuracy: true,
-					timeout: 1000,
+					timeout: 2000,
 					maximumAge: 1000 };
 	navigator.geolocation.getCurrentPosition(extraGeoCallback, extraGeoErrorCallback, options);
 	window.setTimeout("extraGeoMeasure1()", 2000);
