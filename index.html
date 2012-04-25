@@ -16,7 +16,7 @@
 		<script type="text/javascript" src="jquery-mobile/jquery.mobile-1.0b2.js"></script>
  		<link rel="stylesheet" href="jquery-mobile/jquery.mobile-1.0b2-geaendert.css"/>
 	</head>
-	<body onload="userInit()">
+	<body onload="userInit(); isLogedInIndex();">
 
 		<!-- Start of first page (Login)-->
 		<div data-role="page" id="loginPage" data-theme="d">
@@ -147,7 +147,7 @@
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#loginPage" data-transition="slide" data-icon="arrow-l" data-theme="c" data-direction="reverse">Zurück</a></li>				
-						<li><a onclick="registrationCommit()" data-icon="check" data-theme="c">Registrierung ansenden</a></li>
+						<li><a onclick="registrationCommit()" data-icon="check" data-theme="c">Registrierung absenden</a></li>
 					</ul>
 				</div><!-- /navbar -->
 			</div><!-- /footer -->

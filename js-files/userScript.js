@@ -41,6 +41,24 @@ function userInit() {
 	if(getCookie('loginName')) document.getElementById("loginNameId").value = getCookie('loginName');
 }
 
+//Funktion die kontrolliert ob Benutzer eingeloggt ist
+function isLogedInIndex() {
+	log("isLogedIn wurde aufgerufen.");
+	
+	$.post(urlString + "speedtrack/STLoginServlet",
+			  { action: "userstatus" },
+			  function(data) {
+				  if(data.success) {
+					  log("Benutzer ist eingeloggt.");
+					  location.href='indexLoggedIn.html';
+				  } else {
+					  log("Benutzer ist ausgeloggt.");				  
+				  }
+			  }, "json"
+			);
+	
+	log("isLogedIn wurde beendet.");
+}
 
 // Funktion die den User einloggt
 function userLogin() {
