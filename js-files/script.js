@@ -348,7 +348,7 @@ function stopTimeMeasuret() {
 function createHeader() {
 	log("createHeader wurde aufgerufen.");
 	
-	headerString = "VERSION:speedTracker WebApp v1.1" + "\r"
+	headerString = "VERSION:speedTracker Handy v1.1" + "\r"
 	+ "DATAVERSION:1.1" + "\r"
 	+ "MOVEMENTTYPE:" + document.getElementById("movementTypeId").options[document.getElementById("movementTypeId").selectedIndex].value + "\r"
 	+ "FILE:" + "http://speedtracks.org/client/downloadFiles/100kb.txt" + "\r"
