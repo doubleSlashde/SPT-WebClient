@@ -38,7 +38,7 @@ function userInit() {
 	}
 	
 	// Cookie mit loginName vorhanden? -> setze diesen in das Formular ein
-	if(getCookie('loginName')) document.getElementById("loginNameId").value = getCookie('loginName');
+	if(getCookie('loginName')) $("#loginNameId").val(getCookie('loginName'));
 }
 
 //Funktion die kontrolliert ob Benutzer eingeloggt ist
@@ -119,7 +119,7 @@ function userLogout(){
 }
 
 // Funktion die die Userregistrierungsdaten versendet
-function registrationCommit(){
+function registrationCommit(){hardware
 	log("registrationCommit wird gestartet");
 	
 	// Zurücksetzen der Fehlerfarben
