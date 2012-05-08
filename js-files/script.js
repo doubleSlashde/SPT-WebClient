@@ -531,7 +531,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
 		if (time != 0){
 			if(shortMeasure) {
 				downloadRateShow = ((datasize/time));		// Normale Messungen, Angabe in KB/s (Bytes/s = downloadRate*1000)
-				downloadRate = downloadRateShow * 1024;
+				downloadRate = downloadRateShow * 1024;		// TODO Prüfen bei Datenübertragungsgeschwindigkeit Einheit * 1000
 				
 				latency = ((latencyTimeSum ) / 2); 			// milli sec
 			} else {
@@ -554,20 +554,22 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	
 	if(latencyShow == null) latencyShow = latencyEnd;
 	
-	save(downloadRateEnd, latencyEnd, originLat, originLng, timeStamp, "track");
-	
-	if(p_trackmode) {
-		// zeige Längen und Breitengrad
-		document.getElementById("latitudeId").firstChild.data = originLat;
-		document.getElementById("longitudeId").firstChild.data = originLng;
-	
-		// zeige Latenzzeit und Downloadzeit an
-		document.getElementById("downloadRateOfTracking").firstChild.data = downloadRateShow;
-		document.getElementById("latencyOfTracking").firstChild.data = latencyShow;
-	} else {
-		// zeige Latenzzeit und Downloadzeit an
-		document.getElementById("downloadRateOfSpeed").firstChild.data = downloadRateShow;
-		document.getElementById("latencyOfSpeed").firstChild.data = latencyShow;
+	if(downloadRateEnd >= 0 && latencyEnd >= 0) {		
+		if(p_trackmode) {
+			save(downloadRateEnd, latencyEnd, originLat, originLng, timeStamp, "track");
+			
+			// zeige Längen und Breitengrad
+			document.getElementById("latitudeId").firstChild.data = originLat;
+			document.getElementById("longitudeId").firstChild.data = originLng;
+		
+			// zeige Latenzzeit und Downloadzeit für Track an
+			document.getElementById("downloadRateOfTracking").firstChild.data = downloadRateShow;
+			document.getElementById("latencyOfTracking").firstChild.data = latencyShow;
+		} else {
+			// zeige Latenzzeit und Downloadzeit für Speed an
+			document.getElementById("downloadRateOfSpeed").firstChild.data = downloadRateShow;
+			document.getElementById("latencyOfSpeed").firstChild.data = latencyShow;
+		}
 	}
 	
 	// zeige werte in Log
