@@ -415,7 +415,19 @@ function startIntervalMeasure(measureOption, p_trackmode) {
 			document.getElementById("hardwareId").value = "Android Device";
 		} else document.getElementById("hardwareId").value = "Web Applikation";
 	}
-	//alert(document.getElementById("hardwareId").value);
+	
+	// bereite Verfallsdatum für Cookies vor (30 Tage)
+	var cookieExpiry = new Date();
+	cookieExpiry.setTime(cookieExpiry.getTime() + 1000 * 60 * 60 * 24 * 30);
+	
+	// setze Cookie hardwareId mit dem Wert aus dem Formular und Verfallsdatum
+	setCookie("hardwareId", $("#hardwareId").val(), cookieExpiry);
+	
+	// setze Cookie movementTypeId mit dem Wert aus dem Formular und Verfallsdatum
+	setCookie("movementTypeId", $("#movementTypeId option:selected").val(), cookieExpiry);
+	
+	// setze Cookie networkId mit dem Wert aus dem Formular und Verfallsdatum
+	setCookie("networkId", $("#networkId option:selected").val(), cookieExpiry);
 	
 	shortMeasure = measureOption;
 	
