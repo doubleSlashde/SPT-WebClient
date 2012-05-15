@@ -105,10 +105,10 @@ function initialize() {
 	}
 					
 	// URL von Downloadpacket welches runtergeladen werden soll	
-	url50   = urlString + "client/downloadFiles/50kb.txt";
+	url50   = urlString + "speedtrack/client/downloadFiles/50kb.txt";
 	//url50   = "http://speedtrack.doubleslash.de/download/50kb.txt";
-	url100 	= urlString + "client/downloadFiles/100kb.txt";
-	url150 	= urlString + "client/downloadFiles/150kb.txt";	
+	url100 	= urlString + "speedtrack/client/downloadFiles/100kb.txt";
+	url150 	= urlString + "speedtrack/client/downloadFiles/150kb.txt";	
 
 	// Array in welches die Werte reingeschrieben werden um Überschneidungen duch Multithreading zu vermeiden
 	latencyTimeStartArray = new Array();
