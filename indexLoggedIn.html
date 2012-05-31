@@ -2,10 +2,7 @@
  <html>
 	<head>
 		<title>speedtrack-webclient</title>
- 
- 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, charset=utf-8" />
 		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/> 
 		
 		<!-- jQuery -->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile.structure-1.1.0.min.css" />
@@ -163,10 +160,10 @@
 				</div>
 				<div id="information">
 					<div id="downloadRate" class="infoBox">
-						<font>61</font>
+						<font>0</font>
 					</div>
 					<div id="latency" class="infoBox">
-						<font>15</font>
+						<font>0</font>
 					</div>
 				
 					<div>
@@ -181,8 +178,8 @@
 						<p align="left" class="geoLabel">L&auml;ngengrad</p>
 					</div>
 					<div id="geoValues">
-						<div align="center" id="latitude" class="geoBox"><font>0</font></div>
-						<div align="center" id="longitude" class="geoBox"><font>0</font></div>
+						<div align="center" id="latitude" class="geoBox"><font>?</font></div>
+						<div align="center" id="longitude" class="geoBox"><font>?</font></div>
 					</div>
 				</div>
 				<div id="measureNumber">
@@ -194,7 +191,7 @@
 					</div>
 				</div>
 				<div id="stopMeasureBtn" align="center">
-					<button data-role="none" type="button" name="" value="" class="css3button">Messung beenden</button>
+					<button data-role="none" type="button" id="stopButton" class="css3button" onclick="stopMeasure(true); location='#reportPage'">Messung beenden</button>
 				</div>
 			</div>
 		</div>

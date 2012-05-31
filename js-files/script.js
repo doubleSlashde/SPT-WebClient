@@ -154,18 +154,13 @@ function geoStart() {
 			maximumAge: 2000
 		});
 		
-//		// Geolocation funktioniert, es kann gemessen werden
-//		document.getElementById("stateOfTracking").firstChild.data = "Geolocation erfolgreich";
-//		geolocationStatus = true;
-		
 	    log("geo ist an, der Aktuelle Ort wird als Start gewählt");
 	} else {
-		// Zeige Status
-		document.getElementById("stateOfTracking").firstChild.data = "Geolocation geht nicht";
-		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-
 		// Geolocation geht nicht, setze Status auf false, damit nicht gemessen wird
 		geolocationStatus = false;
+		
+		// Zeige Status
+		$("#measureState").html("<font>Geolocation Error!</font>").css("background-color", "#ff0000");
 		
 		// stoppt Messungsintervall
 		finish = true;
@@ -185,28 +180,25 @@ function geoCallback(position) {
 	
 	var c = position.coords;
 	
-	var latRounded = (Math.round(c.latitude *1000 *1000))/1000000;
-	var lngRounded = (Math.round(c.longitude *1000 *1000))/1000000;
+	// Koordinaten auf 5 Nachkommastellen runden
+	var latRounded = (Math.round(c.latitude *100 *1000))/100000;
+	var lngRounded = (Math.round(c.longitude *100 *1000))/100000;
 	
 	var accuracy = position.coords.accuracy;
 	
 	// ueberpruefen ob sich die Koordinaten geaendert haben
 	if(latRounded == originLat && lngRounded == originLng) {
 		// Koordinaten haben sich nicht geaendert, Fehler anzeigen
-		document.getElementById("stateOfTracking").firstChild.data = "keine neuen Koordinaten";
-		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-		document.getElementById("latitudeId").setAttribute("style", "color:red");
-		document.getElementById("longitudeId").setAttribute("style", "color:red");
+		$("#measureState").html("<font>Position unver&auml;ndert!</font>").css("background-color", "#ff0000");
+		$(".geoBox").css("border-color", "#ff0000");
 		
 		// Punkt wird nicht gezählt
 		geolocationStatus = false;
 		
 	} else if(accuracy > 400) {
 		// Koordinaten sind zu ungenau (konnte keine genaue GPS-Poistion bestimmen)
-		document.getElementById("stateOfTracking").firstChild.data = "GPS-Signal schwach";
-		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
-		document.getElementById("latitudeId").setAttribute("style", "color:red");
-		document.getElementById("longitudeId").setAttribute("style", "color:red");
+		$("#measureState").html("<font>GPS-Signal zu schwach!</font>").css("background-color", "#ff0000");
+		$(".geoBox").css("border-color", "#ff0000");
 		
 		// Punkt wird nicht gezählt
 		geolocationStatus = false;
@@ -217,9 +209,9 @@ function geoCallback(position) {
 		originLng = lngRounded;
 		log("origin wird mit den Folgenden Werten zugewiesen: " + originLat + ", " + originLng);
 		
+		// TODO Prüfe ob measureState hier zurück gesetzt werden muss
 		// setze normale Farbe
-		document.getElementById("latitudeId").setAttribute("style", "color:black");
-		document.getElementById("longitudeId").setAttribute("style", "color:black");
+		$(".geoBox").css("border-color", "#999");
 
 		// Geolocation funktioniert, es kann gemessen werden
 		geolocationStatus = true;
@@ -276,8 +268,8 @@ function geoErrorCallback(error) {
 	}
 	
 	// Zeige Status
-	document.getElementById("stateOfTracking").firstChild.data = "Geolocation Fehler";
-	document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+	$("#measureState").html("<font>Ortsbestimmung fehlerhaft!</font>").css("background-color", "#ff0000");
+	$(".geoBox").css("border-color", "#ff0000");
 	
 	// Geolocation geht nicht, setze status auf false, damit nicht gemessen wird
 	geolocationStatus = false;
@@ -331,12 +323,10 @@ function stopTimeMeasuret() {
 		
 	// Zeige Status
 	if(numberOfmeasurements < minTrackPoints){
-		document.getElementById("stateOfTracking").firstChild.data = "Zu wenig Messungen";
-		document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+		$("#measureState").html("<font>Zu wenig Messpunkte!</font>").css("background-color", "#ff0000");
 		
 	}else{
-		document.getElementById("stateOfTracking").firstChild.data = "Tracking beendet";
-		document.getElementById("stateOfTracking").setAttribute("style", "color:green");	
+		$("#measureState").html("<font>Messung abgeschlossen!</font>").css("background-color", "#00bb00");	
 	}
 	
 	log("Die Messung wurde gestoppt. Sie lief " + endTime + " Sekunden");
@@ -391,16 +381,19 @@ function initSpeedTracker(p_trackmode) {
 	numberOfmeasurements = 0;
 	
 	if(p_trackmode) { 
-		document.getElementById("numberOfTracks").firstChild.data = numberOfmeasurements; 
+		$("#measureCount").html("<font>" + numberOfmeasurements + "</font>");
 	} else { 
 		document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements; 
 	}
-	document.getElementById("downloadRateOfTracking").firstChild.data = "0";
-	document.getElementById("latencyOfTracking").firstChild.data = "0";
-	document.getElementById("latitudeId").firstChild.data = "Breitengrad";
-	document.getElementById("longitudeId").firstChild.data = "Längengrad";
-	document.getElementById("stateOfTracking").setAttribute("style", "color:black");
-	document.getElementById("stateOfTracking").firstChild.data = "Tracking gestartet";
+	
+	$("#measureState").html("<font>Messung wird gestartet..</font>").css("background-color", "#ec6600");
+	
+	// &#8211; = HTML Halbgeviertstrich
+	$("#downloadRate").html("<font>&#8211;</font>");
+	$("#latency").html("<font>&#8211;</font>");
+	
+	$("#latitude").html("<font>&#8211;</font>");
+	$("#longitude").html("<font>&#8211;</font>");
 	
 	log("initSpeedTracker wurde beendet.");
 }
@@ -447,19 +440,16 @@ function intervalMeasure(p_trackmode) {
 	
 	if(!finish){
 		// es kommt noch eine Messung
-		
 		log("Neue Messung durchführen");
-
-		// Ladegrafik anzeigen
-		document.getElementById("loadPictureTrack").setAttribute("style", "visibility:visible; position:relative; top: 50%; left:50%; margin: 8px; margin-left:-16px");
-		document.getElementById("loadPictureSpeed").setAttribute("style", "visibility:visible; position:relative; top: 50%; left:50%; margin: 8px; margin-left:-16px");
 
 		finDownloadMeasure = false;
 		finLatencyMeasure = false;
 		
 		run(p_trackmode);
 		
-		if(p_trackmode) document.getElementById("numberOfTracks").firstChild.data = numberOfmeasurements;
+		if(p_trackmode) {
+			$("#measureCount").html("<font>" + numberOfmeasurements + "</font>");
+		}
 		else document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements;
 			
 		if(shortMeasure){
@@ -543,7 +533,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	} else {
 		downloadRate = 0;
 		latency = 0;								// Wert der an das Upload Serlver übergeben wird (muss Zahl sein)
-		latencyShow = '—';							// Wert der im Frontend angezeigt wird
+		latencyShow = '&#8211;';					// Wert der im Frontend angezeigt wird
 		downloadRateShow = 0;
 	}
 	
@@ -559,12 +549,12 @@ function printTrack(p_dataUrlString, p_trackmode) {
 			save(downloadRateEnd, latencyEnd, originLat, originLng, timeStamp, "track");
 			
 			// zeige Längen und Breitengrad
-			document.getElementById("latitudeId").firstChild.data = originLat;
-			document.getElementById("longitudeId").firstChild.data = originLng;
+			$("#latitude").html("<font>" + originLat + "</font>");
+			$("#longitude").html("<font>" + originLng + "</font>");
 		
 			// zeige Latenzzeit und Downloadzeit für Track an
-			document.getElementById("downloadRateOfTracking").firstChild.data = downloadRateShow;
-			document.getElementById("latencyOfTracking").firstChild.data = latencyShow;
+			$("#downloadRate").html("<font>" + downloadRateShow + "</font>");
+			$("#latency").html("<font>" + latencyShow + "</font>");
 		} else {
 			// zeige Latenzzeit und Downloadzeit für Speed an
 			document.getElementById("downloadRateOfSpeed").firstChild.data = downloadRateShow;
@@ -589,15 +579,15 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 	latencyTimeSum = 0;
 
 	if(p_trackmode) {
+		$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
+
 		// Zeige Status und Anzahl Messungen
 		if(numberOfmeasurements < minTrackPoints) {
-			document.getElementById("stateOfTracking").setAttribute("style", "color:black");
-			document.getElementById("numberOfTracks").setAttribute("style", "color:red");			
-			document.getElementById("stateOfTracking").firstChild.data = "Tracking läuft, nicht unterbrechen";	
+			$("#measureCount").css("color", "#ff0000");
 		} else {
-			document.getElementById("stateOfTracking").setAttribute("style", "color:green");
-			document.getElementById("numberOfTracks").setAttribute("style", "color:green");
-			document.getElementById("stateOfTracking").firstChild.data = "Track kann gesendet werden";	
+			$("#measureCount").css("color", "#00bb00");
+			$("#stopButton").css("background", "-webkit-gradient(linear, left top, left bottom, from(#FFAD72), color-stop(0.25, #FF9347), color-stop(0.50, #EC6600), color-stop(0.75, #FF9347), to(#FFAD72))");
+			$("#stopButton").css("background", "-moz-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72)");
 		}
 		
 		// Koordinaten aktuallisieren
@@ -606,7 +596,6 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 		// schauen ob Geoloaction an und ob es richtig gemessen hat
 		if(!geolocationStatus) {
 			// Fehler mit Geoloction!!!
-			document.getElementById("stateOfTracking").setAttribute("style", "color:red");
 			return;
 		}
 	}
@@ -663,15 +652,13 @@ function getLatencyShort(p_dataUrl)					// Parameter enthält URL zur Datei und 
 				latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStart);
 				
 				finLatencyMeasure = true;
-				showNotLoadImg();
 				
 				log("latencyTimeEnd wurde gemessen");
 				log("getLatency wurde beendet.");
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				// Zeige Status
-				document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
-				document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+				$("#measureState").html("<font>Latenzermittlung fehlerhaft!</font>").css("background-color", "#ff0000");
 				
 				log("Fehler, Latenz konnte nicht berechnet werden");
 				log("Error: " + jqXHR + textStatus + errorThrown);
@@ -705,14 +692,12 @@ function getLatency()
 					latencyTimeSum = latencyTimeSum + (latencyTimeEnd - latencyTimeStartArray[i]);
 					
 					finLatencyMeasure = true;
-					showNotLoadImg();
 					
 					log("latencyTimeEnd wurde gemessen");
 				}
 				else {        
 					// Zeige Status
-					document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Latenzbestimmung";
-					document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+					$("#measureState").html("<font>Latenzermittlung fehlerhaft!</font>").css("background-color", "#ff0000");
 					
 					log("Fehler, Latenz konnte nicht berechnet werden");
 	            	log("Fehler!!! Status : " + xhr.status);
@@ -768,19 +753,17 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 
 			if(isAndroidPhone) {
 				var connection = checkConnection();
-				if(connection == "No network connection") {
+				if(connection == "NONE") {
 					downloadTimeSum = 0;
 					if(p_trackmode) {
-						document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
-						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+						$("#measureState").html("<font>Keine Internetverbindung?</font>").css("background-color", "#ff0000");
 					} else {
 						document.getElementById("stateOfSpeed").firstChild.data = "Keine Internetverbindung?";
 						document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
 					} return;
 				} else {
 					if(p_trackmode) {
-						document.getElementById("stateOfTracking").firstChild.data = "Messung läuft..";
-						document.getElementById("stateOfTracking").setAttribute("style", "color: #000");
+						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
 					} else {
 						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
 						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
@@ -803,8 +786,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					geoThread = false;
 					
 					if(p_trackmode) {
-						document.getElementById("stateOfTracking").firstChild.data = "Messung läuft..";
-						document.getElementById("stateOfTracking").setAttribute("style", "color: #000");
+						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
 					} else {
 						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
 						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
@@ -816,7 +798,6 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					downloadTimeSum = downloadTimeSum + (downloadTimeEnd - downloadTimeStart);
 								
 					finDownloadMeasure = true;
-					showNotLoadImg();
 								
 					log("downloadTimeEnd wurde gemessen");	
 					
@@ -835,16 +816,14 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					  (errorThrown.message.search("0x80004005") ||  errorThrown.message.search("0x80040111")) != -1) {
 						downloadTimeSum = 0;
 						if(p_trackmode) {
-							document.getElementById("stateOfTracking").firstChild.data = "Keine Internetverbindung?";
-							document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+							$("#measureState").html("<font>Keine Internetverbindung?</font>").css("background-color", "#ff0000");
 						} else {
 							document.getElementById("stateOfSpeed").firstChild.data = "Keine Internetverbindung?";
 							document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
 						}
 					} else {
 						// Zeige Status
-						document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Downloadrate";
-						document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+						$("#measureState").html("<font>Download fehlerhaft!</font>").css("background-color", "#ff0000");
 					}
 					
 					log("Fehler mit dem runterlaen der datei" + jqXHR + textStatus + errorThrown);
@@ -887,13 +866,11 @@ function getDownloadTime()				// Gleiche Funktion wie oben, jedoch mit Ajax und 
 				downloadTimeSum = downloadTimeSum + (downloadTimeEnd - downloadTimeStartArray[i]);
 				
 				finLatencyMeasure = true;
-				showNotLoadImg();
 				
 				log("latencyTimeEnd wurde gemessen");				
 			},
 			error: function(jqXHR, textStatus, errorThrown){
-				document.getElementById("stateOfTracking").firstChild.data = "Fehler bei Downloadrate";
-				document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+				$("#measureState").html("<font>Download fehlerhaft!</font>").css("background-color", "#ff0000");
 				
 				log("Fehler mit dem runterlaen der datei" + jqXHR + textStatus + errorThrown);
 				log("jqXHR: " + jqXHR);
@@ -917,7 +894,7 @@ function send(sendAsMail) {
 	}
 
 	// zeige Status
-	document.getElementById("stateOfTracking").firstChild.data = "Track senden";
+	$("#measureState").html("<font>Messung absenden ...</font>").css("background-color", "#00bb00");
 	
 	log("send wurde beendet.");
 }
@@ -966,8 +943,7 @@ function isLogedIn() {
 					  document.getElementById("nameOfUserSpeed").firstChild.data = name;
 					  //send(true);		// Funktion zum Senden des Tracks
 				  } else {
-					  document.getElementById("stateOfTracking").firstChild.data = "Benutzter nicht eingeloggt";
-					  document.getElementById("stateOfTracking").setAttribute("style", "color:red");
+					  $("#measureState").html("<font>Login timed out!</font>").css("background-color", "#ff0000");
 					  
 					  document.getElementById("stateOfSpeed").firstChild.data = "Benutzter nicht eingeloggt";
 					  document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
@@ -979,20 +955,6 @@ function isLogedIn() {
 			);
 	
 	log("isLogedIn wurde beendet.");
-}
-
-// Funrkion die die Ladegrafik ausblendet
-function showNotLoadImg() {
-	log("showNotLoadImg wurde aufgerufen.");
-	
-	// blendet lLadebild aus wenn Messungen beendet sind
-	if(finDownloadMeasure && finLatencyMeasure) {
-		document.getElementById("loadPictureTrack").setAttribute("style", "visibility:hidden");
-		document.getElementById("loadPictureSpeed").setAttribute("style", "visibility:hidden");
-		log("Ladebild wurde ausgeblendet.");
-	}
-	
-	log("showNotLoadImg wurde beendet.");
 }
 
 /* Funktion die das Ergebniss an das servlet überträgt, 
@@ -1044,7 +1006,7 @@ function checkConnection() {
     states[Connection.CELL_2G]  = 'Cell 2G connection';
     states[Connection.CELL_3G]  = 'Cell 3G connection';
     states[Connection.CELL_4G]  = 'Cell 4G connection';
-    states[Connection.NONE]     = 'No network connection';
+    states[Connection.NONE]     = 'NONE';
     
     return states[networkState];
     //alert('Connection type: ' + states[networkState]);
