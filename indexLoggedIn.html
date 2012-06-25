@@ -21,11 +21,11 @@
  		<script type="text/javascript" src="phonegap-1.3.0.js"></script>
  		
  		<script type="text/javascript">	
- 			$(document).ready(function() {
- 				// Anklicken des Inputs Gerätebezeichnung löscht den Inhalt
+ 			$(document).bind('pageinit', function() {
+ 				/// Anklicken des Login-Inputs in #hardwareId löscht den Inhalt und greyInputValue Klasse (ausgegraute Schrift im Input)
 	 			$("#hardwareId").one("click", function() {
-	 				$("#hardwareId").val("");
-	 			});
+ 				$("#hardwareId").removeClass("greyInputValue").val("");
+ 			});
 	 			
 	 			// Cookie mit hardwareId vorhanden? -> setze diesen in das Formular ein
 	 			if(getCookie('hardwareId')) $("#hardwareId").val(getCookie('hardwareId'));
@@ -41,48 +41,61 @@
 	</head>
 	<body data-theme="d" onload="initialize(); userInit(); isLogedIn();">
 		<!-- Start of first page (configuration) -->
-		<div data-role="page" id="configPage" data-theme="d">
-			<div data-role="header" data-theme="d">
-				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" style="float: left;" > 
-				<h1 class="ui-btn-right">Optionen</h1>
-			</div><!-- /header -->
-			<div data-role="content">	
-				<div data-role="fieldcontain" data-theme="c">
-				    <label for="hardwareId">Hardware:</label>
-				    <input type="text" id="hardwareId" value="Gerätebezeichnung" />
-				</div>	
-				<div data-role="fieldcontain" data-theme="c">
-					<label for="movementTypeId" class="select ui-btn-left">Bewegungsart:</label>
-					<select name="movementTypeId" id = "movementTypeId" data-theme="c">
-						<option value ="1">Zu Fuss</option>
-						<option value ="2">Fahrrad</option>
-						<option value ="3">Schiff</option>
-						<option value ="4">Auto</option>
-						<option value ="5">Zug</option>
-						<option value ="6">Flugzeug</option>
-					</select>
+		<div data-role="page" id="configPage">
+			<div id="header">
+				<font>speedTrack</font>
+				<a href="#aboutLoggedOutPage" data-transition="slide">
+					<img align="right" src="picture/info.png">
+				</a>
+			</div>
+			<div id="configForm" class="content">
+				<div id="optionForm">
+				<table width="100%">
+					<colgroup>
+						<col width="40%">
+				    	<col width="60%">
+					</colgroup>
+					<tr>
+						<td><label>Hardware</label></td>
+						<td><input data-role="none" type="text" id="hardwareId" class="greyInputValue" value="Ger&auml;tebezeichnung" /></td>
+					</tr>
+					<tr>
+				  	<td><label for="movementTypeId">Bewegungsart</label></td>
+				   	<td>
+					   	<select name="movementTypeId" id="movementTypeId" data-role="none"> 
+							<option value="1">Zu Fu&szlig;</option>
+							<option value="2">Fahrrad</option>
+							<option value="3">Schiff</option>
+							<option value="4" selected>Auto</option>
+							<option value="5">Zug</option>
+							<option value="6">Flugzeug</option> 
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="networkId">Provider</label></td>
+					<td>
+							<select name="networkId" id="networkId" data-role="none"> 
+							<option value="1" selected>D1 T-Mobile</option>
+							<option value="2">O2 Germany</option>
+							<option value="3">D2 Vodafone</option>
+							<option value="4">E-Plus (E+)</option> 
+						</select>
+					</td>
+				</tr>
+				</table>
 				</div>
-				<div data-role="fieldcontain" data-theme="c">
-					<label for="networkId" class="select">Benutztes Netz:</label>
-					<select name = "networkId" id = "networkId" data-theme="c">
-						<option value ="1" selected>D1 T-Mobile</option>
-						<option value ="2">O2 Germany</option>
-						<option value ="3">D2 Vodafone</option>
-						<option value ="4">E-Plus (E+)</option>
-					</select>
-				</div>		
-			</div><!-- /content -->
-			<div data-role="footer" data-theme="d" data-position="fixed">
-				<div data-role="navbar">
-					<ul>
-						<li><a href="#aboutLoggedInPage" data-transition="slide" data-icon="info" data-theme="c">Infos</a></li>	
-						<li><a onclick="userLogout()" data-theme="c" data-icon="delete">Logout</a></li>
-						<li><a href="#messurePage" data-icon="arrow-r" data-transition="slide" data-theme="c">Tracken</a> </li>	
-						<li><a href="#speedPage" data-icon="arrow-r" data-transition="slide" data-theme="c">Speed</a></li>		
-					</ul>
-				</div><!-- /navbar -->
-			</div><!-- /footer -->
-		</div><!-- /page -->
+				<div id="configHelp" align="right">
+					<p><a href="#" data-transition="slide">Geschwindigkeitsmessung</a></p>
+				</div>			
+				<div id="optionPageBtn" align="center">
+					<button data-role="none" type="button" id="optionPageButton1" class="css3button_grey css3button_small" onclick="userLogout()">Ausloggen</button>
+					<a href="#runningMessurePage" data-transition="slide">
+						<button data-role="none" type="button" id="infoPageButton2" class="css3button css3button_small" onclick="startIntervalMeasure(true, true)">Tracken</button>
+					</a>
+				</div>				
+			</div>
+		</div>
 
 		<!-- Start of next page (messure)-->
 		<div data-role="page" id="messurePage" data-theme="d">
@@ -152,7 +165,7 @@
 		<div data-role="page" id="runningMessurePage">
 			<div id="header">
 				<font>speedTrack</font>
-				<img align="right" src="picture/animation.gif">
+				<img align="right" src="picture/animation.gif" style="margin-top: 6px !important; margin-right: -10px !important;">
 			</div>
 			<div id="content" align="center">
 				<div id="measureState">
@@ -191,7 +204,7 @@
 					</div>
 				</div>
 				<div id="stopMeasureBtn" align="center">
-					<button data-role="none" type="button" id="stopButton" class="css3button" onclick="stopMeasure(true); location='#reportPage'">Messung beenden</button>
+					<button data-role="none" type="button" id="stopButton" class="css3button_grey" onclick="stopMeasure(true); location='#reportPage'">Messung beenden</button>
 				</div>
 			</div>
 		</div>
@@ -240,33 +253,28 @@
 			</div><!-- /footer -->
 		</div><!-- /page -->
 
-		<!-- Start of report page -->
-		<div data-role="page" id="reportPage" data-theme="d">
-			<div data-role="header" data-theme="d" data-position="inline">
-				<img alt="Speedtrack Logo" src="picture/speedtracklogo.png" width = "125" style="float: left;" > 
-				<h1 class="ui-btn-right">Bericht</h1>
-			</div><!-- /header -->		
-			<div data-role="content" >
+		<div data-role="page" id="reportPage">
+			<div id="header">
+				<font>speedTrack</font>
+				<a href="#aboutLoggedOutPage" data-transition="slide">
+					<img align="right" src="picture/info.png">
+				</a>
+			</div>
+			<div id="reportContent" class="content" >
 				<p>
-					<b id="reportSuccess"></b><br />
-					<b id="reportMassage">Die Messung wird übertragen.. </b>
+					<b>Status: </b><b id="reportSuccess"></b><br />
+					<b id="reportMassage">Die Messung wird &uuml;bertragen.. </b>
 				</p>
-				<div id = "buttonDiv" >
-					<a onclick="send(true)" data-role="button" data-inline="true" data-theme="c">Bericht per Email senden</a>				
-				</div>
-				<!-- Track senden -->				
-			</div><!-- /content -->
-			
-			<div data-role="footer" data-theme="d" data-position="fixed">
-				<div data-role="navbar">
-					<ul>
-						<li>
-							<a href="#configPage" data-icon="arrow-l" data-direction="reverse" data-theme="c">Zurück</a> 
-						</li>
-					</ul>
-				</div><!-- /navbar -->
-			</div><!-- /footer -->
-		</div><!-- /page -->
+				<div id="buttonDiv" align="center">
+					<button data-role="none" type="button" class="css3button" onclick="send(true)">Bericht per Email senden</button>			
+				</div>	
+				<div id="reportPageBtn" align="center">
+					<a href="#configPage">
+						<button data-role="none" type="button" class="css3button_grey">Bericht schlie&szlig;en</button>
+					</a>
+				</div>			
+			</div>
+		</div>
 
 		<!-- Start of report page Speed -->
 		<div data-role="page" id="reportPageSpeed" data-theme="d">
