@@ -14,20 +14,21 @@ body {
 	height: 100%;
 }
 
-.content {
-	padding-top: 40px;
-	border-bottom: 116px solid #2c4766;
-}
-
 a {
     text-decoration: none;
 }
 
 #header {
 	border-bottom: 3px solid #2c4766;
-	padding:  15px 20px 20px 20px;
-				
-	background: #f0f0f0;
+	padding:  15px 20px 20px 20px;			
+	background: #fdfdfd;
+	background: -moz-linear-gradient(top,  #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(50%,#e5e5e5), color-stop(50%,#d8dee2), color-stop(100%,#c4cace));
+	background: -webkit-linear-gradient(top,  #fdfdfd 0%,#e5e5e5 50%,#d8dee2 50%,#c4cace 100%);
+	background: -o-linear-gradient(top,  #fdfdfd 0%,#e5e5e5 50%,#d8dee2 50%,#c4cace 100%);
+	background: -ms-linear-gradient(top,  #fdfdfd 0%,#e5e5e5 50%,#d8dee2 50%,#c4cace 100%);
+	background: linear-gradient(top,  #fdfdfd 0%,#e5e5e5 50%,#d8dee2 50%,#c4cace 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#c4cace',GradientType=0 );
 }
 		
 #header font {
@@ -37,14 +38,51 @@ a {
 }
 
 #header img {
-	margin-top: 6px;
-	margin-right: -15px;
+	margin-top: -8px;
+	margin-right: 10px;
 }
 
 #stopMeasureBtn {
 	width: 90%;
 	position: relative;
 	margin-bottom: -90px;
+}
+
+button.css3button_grey {
+	width: 550px;
+	height: 175px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 50px;
+	color: #ffffff;
+	padding: 5px 10px 10px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#cccccc 0%,
+		#aaaaaa 25%,
+		#888888 50%,
+		#aaaaaa 75%,
+		#cccccc);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#cccccc),
+		color-stop(0.25, #aaaaaa),
+		color-stop(0.50, #888888),
+		color-stop(0.75, #aaaaaa),
+		to(#cccccc));
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border: 2px solid #808080;
+	-moz-box-shadow:
+		0px 3px 10px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(194,194,194,1);
+	-webkit-box-shadow:
+		0px 3px 10px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(194,194,194,1);
+	text-shadow:
+		2px 2px 10px rgba(000,000,000,0.5),
+		0px 1px 0px rgba(255,255,255,0.3);
 }
 
 button.css3button {
@@ -75,16 +113,12 @@ button.css3button {
 /* -------- Hier beginnt das spezifische Logindesign -------- */
 
 .content {
-	padding: 100px 20px 20px 20px;
+	padding: 130px 20px 20px 20px;
+	border-bottom: 116px solid #2c4766;
 }
 
 #loginPage {
 	height: 100%;
-}
-
-#header img {
-	margin-top: -8px;
-	margin-right: 10px;
 }
 
 #loginBtn {
@@ -95,7 +129,7 @@ button.css3button {
 }
 
 #loginForm {
-	margin-bottom: 85px;
+	margin-bottom: 100px;
 }
 
 label, .label {
@@ -106,9 +140,22 @@ label, .label {
 
 #loginHelp {
 	height: 400px;
-	background: transparent url(../picture/earth_cyan_big_big.png) no-repeat right;
-	margin-bottom: 90px;
-	float: right;
+	width: 100%;
+	background: transparent url(../picture/earth_cyan.jpg) no-repeat right;
+	margin-bottom: 50px;
+	padding-top: 130px;
+}
+
+#loginHelp p {
+	margin-top: 40px;
+	padding-right: 10px;
+}
+
+#loginHelp a {
+	font-size: 40px;
+	color: #808080;
+	font-weight: bold;
+	text-decoration: underline !important;	
 }
 
 .loginInput {
@@ -126,29 +173,20 @@ label, .label {
 	-webkit-box-shadow: 4px 4px 5px #bbb;
 }
 
-#loginHelp button {
-	width: 480px;
+#moreInfo {
+	color: #EC6600;
+	font-size: 40px;
+	padding-left: 5px;
+}
+
+button.css3button_small_grey {
+	width: 320px;
+	height: 150px;
 	font-weight: bold;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 45px;
-	color: #fff;
-	padding: 10px;
-	margin-top: 70px;
-	opacity: 0.9;
-	text-decoration:none;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border: 2px solid #808080;
-	-moz-box-shadow:
-		0px 3px 10px rgba(000,000,000,0.5),
-		inset 0px 0px 1px rgba(194,194,194,1);
-	-webkit-box-shadow:
-		0px 3px 10px rgba(000,000,000,0.5),
-		inset 0px 0px 1px rgba(194,194,194,1);
-	text-shadow:
-		2px 2px 10px rgba(000,000,000,0.5),
-		0px 1px 0px rgba(255,255,255,0.3);
+	font-size: 50px;
+	color: #ffffff;
+	padding: 5px 10px 10px 10px;
 	background: -moz-linear-gradient(
 		top,
 		#cccccc 0%,
@@ -163,6 +201,19 @@ label, .label {
 		color-stop(0.50, #888888),
 		color-stop(0.75, #aaaaaa),
 		to(#cccccc));
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border: 2px solid #808080;
+	-moz-box-shadow:
+		0px 3px 10px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(194,194,194,1);
+	-webkit-box-shadow:
+		0px 3px 10px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(194,194,194,1);
+	text-shadow:
+		2px 2px 10px rgba(000,000,000,0.5),
+		0px 1px 0px rgba(255,255,255,0.3);
 }
 
 button.css3button_small {
@@ -221,7 +272,20 @@ button.css3button_small {
 }
 
 #newPasswordForm {
-	margin-bottom: 90%;
+	margin-bottom: 79%;
+}
+
+.loginInputValue {
+	color: #808080 !important;
+	font-size: 28px !important;
+}
+
+#passwordNote {
+	margin-top: 100px;
+	font-size: 30px;
+	color: #2c4766;
+	font-weight: bold;
+	padding: 10px;
 }
 
 #forgetPasswordBtn, #regiPageBtn, #aboutLoggedOutPageBtn {
@@ -240,10 +304,6 @@ button.css3button_small {
 #collapse {
 	min-height: 370px;
 	margin-bottom: 40px;
-	background: transparent url(../picture/earth_cyan_big_big.png) no-repeat left;
-	padding-top: 100px;
-}
-
-.ui-collapsible-heading .ui-btn-inner, .ui-collapsible-heading .ui-btn-icon-left .ui-btn-inner {
-	padding-left: 20px !important;
+	background: transparent url(../picture/earth_cyan.jpg) no-repeat bottom right;
+	padding-top: 70px;
 }
