@@ -1,6 +1,7 @@
 /*	------------------ Variablen ------------------ */	
 
 var urlString;						// String in dem URL gespeichert wird
+var android = false;				// Angabe ob Android App
 
 
 /*	------------------ Wichtig fuer Consolenausgabe ------------------ */
@@ -17,23 +18,33 @@ window.log = function(message) {
 
 // Funktion die wichtige sachen inizialisiert
 function userInit() {
-	
-	// (ACHTUNG muss auch in script.js geändert werden)
-	// Angabe ob fuer Android oder nicht
-	var android = false;
 	// Versionsangabe
 	version = "1.0.0";
 	
-	document.getElementById("versionId").firstChild.data = version;
+	//document.getElementById("versionId").firstChild.data = version;
 	
 	if(android) {
 		// für Android	
+		urlString = "http://speedtracks.org/";
 		document.getElementById("platformId").firstChild.data = "Android App";
+		//urlString = "http://carey.ds.de:8080/speedtrack/";
+	} else {
+		// für lokales	
+		urlString = "../";
+		document.getElementById("platformId").firstChild.data = "Web App";
+	}
+}
+
+function userInitLogin() {
+	// Versionsangabe
+	version = "1.0.0";
+	
+	if(android) {
+		// für Android	
 		urlString = "http://speedtracks.org/";
 		//urlString = "http://carey.ds.de:8080/speedtrack/";
 	} else {
 		// für lokales	
-		document.getElementById("platformId").firstChild.data = "Web App";
 		urlString = "../";
 	}
 	
@@ -64,8 +75,8 @@ function isLogedInIndex() {
 function userLogin() {
 	log("userLogin wird gestartet");
 	
-	var password = document.getElementById("passwordId").value;
-	var loginName = document.getElementById("loginNameId").value;
+	var password = $("#passwordId").val();
+	var loginName = $("#loginNameId").val();
 
 	if(loginName == null || loginName == "") {
 		alert("Bitte geben sie einen Loginnamen ein");	

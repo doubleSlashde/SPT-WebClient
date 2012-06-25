@@ -106,7 +106,6 @@ function initialize() {
 					
 	// URL von Downloadpacket welches runtergeladen werden soll	
 	url50   = urlString + "speedtrack/client/downloadFiles/50kb.txt";
-	//url50   = "http://speedtrack.doubleslash.de/download/50kb.txt";
 	url100 	= urlString + "speedtrack/client/downloadFiles/100kb.txt";
 	url150 	= urlString + "speedtrack/client/downloadFiles/150kb.txt";	
 
