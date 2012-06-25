@@ -130,7 +130,7 @@ function userLogout(){
 }
 
 // Funktion die die Userregistrierungsdaten versendet
-function registrationCommit(){hardware
+function registrationCommit(){
 	log("registrationCommit wird gestartet");
 	
 	// Zurücksetzen der Fehlerfarben
