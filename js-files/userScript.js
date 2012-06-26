@@ -190,7 +190,8 @@ function newPassword() {
 			{ login: document.getElementById("forgetPasswordId").value },
 				function(data) {
 					 if(data.success) {
-						location.href='indexLoggedIn.html'; 
+						 alert('Das generierte Passwort wurde erfolgreich verschickt.');
+						location.href='index.html'; 
 					} else {
 						alert(data.message);					  
 				}
