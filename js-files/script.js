@@ -205,7 +205,6 @@ function geoCallback(position) {
 		originLng = lngRounded;
 		log("origin wird mit den Folgenden Werten zugewiesen: " + originLat + ", " + originLng);
 		
-		// TODO Prüfe ob measureState hier zurück gesetzt werden muss
 		// setze normale Farbe
 		$(".geoBox").css("border-color", "#999");
 
@@ -935,15 +934,9 @@ function isLogedIn() {
 				  if(data.success) {
 					  log("Benutzer ist eingeloggt.");
 					  name = data.login;
-					  document.getElementById("nameOfUserTrack").firstChild.data = name;
-					  document.getElementById("nameOfUserSpeed").firstChild.data = name;
-					  //send(true);		// Funktion zum Senden des Tracks
+					  // TODO show user name?
 				  } else {
 					  $("#measureState").html("<font>Login timed out!</font>").css("background-color", "#ff0000");
-					  
-					  document.getElementById("stateOfSpeed").firstChild.data = "Benutzter nicht eingeloggt";
-					  document.getElementById("stateOfSpeed").setAttribute("style", "color:red");
-					  
 					  log("Benutzer ist ausgeloggt.");
 					  location.href='index.html';					  
 				  }
