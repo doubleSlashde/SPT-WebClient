@@ -26,12 +26,10 @@ function userInit() {
 	if(android) {
 		// für Android	
 		urlString = "http://speedtracks.org/";
-		document.getElementById("platformId").firstChild.data = "Android App";
 		//urlString = "http://carey.ds.de:8080/speedtrack/";
 	} else {
 		// für lokales	
 		urlString = "../";
-		document.getElementById("platformId").firstChild.data = "Web App";
 	}
 }
 

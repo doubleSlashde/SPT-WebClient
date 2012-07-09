@@ -93,13 +93,11 @@ function initialize() {
 	
 	if(isAndroidPhone) {
 		// für Android	
-		document.getElementById("platformId").firstChild.data = "Android App";
 		urlString = "http://speedtracks.org/";	
 		//urlString = "http://carey.ds.de:8080/speedtrack/";
 		
 	} else {
 		// für lokales	
-		document.getElementById("platformId").firstChild.data = "Web App";
 		urlString = "../";														// Homepage und Lokal	
 	}
 					
