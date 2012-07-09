@@ -381,7 +381,7 @@ function initSpeedTracker(p_trackmode) {
 	if(p_trackmode) { 
 		$("#measureCount").html("<font>" + numberOfmeasurements + "</font>");
 	} else { 
-		document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements; 
+		//document.getElementById("numberOfSpeed").firstChild.data = numberOfmeasurements; 
 	}
 	
 	$("#measureState").html("<font>Messung wird gestartet..</font>").css("background-color", "#ec6600");
