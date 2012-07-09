@@ -89,8 +89,7 @@ function initialize() {
 	isAndroidPhone = false;
 	version = "1.0.0";
 	
-	// anzeigen der Versionsnummer
-	document.getElementById("versionId").firstChild.data = version;
+	// TODO Versionsnummer mit anzeigen
 	
 	if(isAndroidPhone) {
 		// für Android	

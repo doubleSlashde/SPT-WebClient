@@ -21,7 +21,7 @@ function userInit() {
 	// Versionsangabe
 	version = "1.0.0";
 	
-	//document.getElementById("versionId").firstChild.data = version;
+	// TODO Versionsnummer mit anzeigen
 	
 	if(android) {
 		// für Android	
