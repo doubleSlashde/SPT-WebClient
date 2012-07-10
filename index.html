@@ -28,7 +28,7 @@
 		</script>
 		
 		<script>
-			$(document).bind('pageinit', function() {
+			$(document).bind('pageinit', function() {		
 				// get the iScroll script after the DOM has been loaded completely
 				$.getScript("js-files/iscroll-lite.js");
 				
@@ -52,19 +52,22 @@
 				}
 			});
 			
-			$(document).bind('pagebeforechange', function() {
-				if (typeof aboutLoggedOutScroll != 'undefined' && aboutLoggedOutScroll != null) {
-					aboutLoggedOutScroll.destroy();
-					aboutLoggedOutScroll = null;
-				} if (typeof infoScroll != 'undefined' && infoScroll != null) {
-					infoScroll.destroy();
-					infoScroll = null;
-				}
+			$(document).ready(function() {
+				$(document).bind('pagebeforechange', function() {
+					if (typeof aboutLoggedOutScroll != 'undefined' && aboutLoggedOutScroll != null) {
+						aboutLoggedOutScroll.destroy();
+						aboutLoggedOutScroll = null;
+					} if (typeof infoScroll != 'undefined' && infoScroll != null) {
+						infoScroll.destroy();
+						infoScroll = null;
+					}
+				});
+				
+				$(document).bind('pagechange', function() {
+					createScroller();
+				});
 			});
 			
-			$(document).bind('pagechange', function() {
-				createScroller();
-			});
 		</script>
 		
 	</head>

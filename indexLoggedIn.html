@@ -61,16 +61,18 @@
 	 			if(getCookie('networkId')) $("#networkId").val(getCookie('networkId')).attr('selected', true);
  			});
  			
- 			$(document).bind('pagebeforechange', function() {
- 				if (typeof aboutLoggedOutScroll != 'undefined' && aboutLoggedOutScroll != null) {
- 					aboutLoggedOutScroll.destroy();
- 					aboutLoggedOutScroll = null;
- 				}
- 			});
- 			
- 			$(document).bind('pagechange', function() {
- 				createScroller();
- 			});
+ 			$(document).ready(function() {
+ 				$(document).bind('pagebeforechange', function() {
+ 	 				if (typeof aboutLoggedOutScroll != 'undefined' && aboutLoggedOutScroll != null) {
+ 	 					aboutLoggedOutScroll.destroy();
+ 	 					aboutLoggedOutScroll = null;
+ 	 				}
+ 	 			});
+ 	 			
+ 	 			$(document).bind('pagechange', function() {
+ 	 				createScroller();
+ 	 			});
+			});
  		</script>
  		
 	</head>
