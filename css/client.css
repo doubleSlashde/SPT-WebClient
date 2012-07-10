@@ -38,6 +38,7 @@
 /* ---------- CSS für Measure Page ---------- */
 #measureState {
 	width: 90%;
+	max-height: 15%;
 	background-color: #EC6600;
 	color: #fff;
 	border: 2px solid #999;
@@ -86,7 +87,7 @@
 }
 
 .measureLabel {
-	font-size: 100% !important;
+	font-size: 95% !important;
 	font-weight: bold !important;
 	color: #2c4766 !important;
 }
