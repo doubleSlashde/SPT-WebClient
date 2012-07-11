@@ -93,8 +93,7 @@ function initialize() {
 	
 	if(isAndroidPhone) {
 		// für Android	
-		urlString = "http://speedtracks.org/";	
-		//urlString = "http://carey.ds.de:8080/speedtrack/";
+		urlString = "http://www.speedtracks.org/";
 		
 	} else {
 		// für lokales	

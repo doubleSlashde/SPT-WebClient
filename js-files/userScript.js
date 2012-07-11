@@ -25,8 +25,7 @@ function userInit() {
 	
 	if(android) {
 		// für Android	
-		urlString = "http://speedtracks.org/";
-		//urlString = "http://carey.ds.de:8080/speedtrack/";
+		urlString = "http://www.speedtracks.org/";
 	} else {
 		// für lokales	
 		urlString = "../";
@@ -39,8 +38,7 @@ function userInitLogin() {
 	
 	if(android) {
 		// für Android	
-		urlString = "http://speedtracks.org/";
-		//urlString = "http://carey.ds.de:8080/speedtrack/";
+		urlString = "http://www.speedtracks.org/";
 	} else {
 		// für lokales	
 		urlString = "../";
