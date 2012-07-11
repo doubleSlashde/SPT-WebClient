@@ -146,6 +146,7 @@ function registrationCommit(){
 			aboutme: "" },
 			function(data) {
 				if(data.success) {
+					alert('Eine Bestätigungs-Email zur Freischaltung Ihrer Registrierung ist an Sie unterwegs.');
 					location.href='index.html'; 
 				} else {
 					if(data.message == "") {
