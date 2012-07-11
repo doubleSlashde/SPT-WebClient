@@ -139,10 +139,11 @@ function registrationCommit(){
 			pass1: document.getElementById("passwordId1").value, 
 			pass2: document.getElementById("passwordId2").value, 
 			email: document.getElementById("emailId").value, 
-			website: document.getElementById("WebsiteId").value, 
-			country: document.getElementById("landId").value, 
-			place: document.getElementById("placeId").value, 
-			aboutme: document.getElementById("aboutMeId").value },
+			// TODO Erweiterte Angaben aus POST-Request entfernen => Servlet anpassen!!
+			website: "", 
+			country: "", 
+			place: "", 
+			aboutme: "" },
 			function(data) {
 				if(data.success) {
 					location.href='index.html'; 
