@@ -573,7 +573,7 @@ function run(p_trackmode) {								// Trackmode oder Einzelmessung -> Trackmode:
 	latencyTimeSum = 0;
 
 	if(p_trackmode) {
-		$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
+		$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#009FE4");
 
 		// Zeige Status und Anzahl Messungen
 		if(numberOfmeasurements < minTrackPoints) {
@@ -757,7 +757,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					} return;
 				} else {
 					if(p_trackmode) {
-						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
+						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#009FE4");
 					} else {
 						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
 						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
@@ -780,7 +780,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)				// Gleiche Funktion wie
 					geoThread = false;
 					
 					if(p_trackmode) {
-						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#ec6600");
+						$("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#009FE4");
 					} else {
 						document.getElementById("stateOfSpeed").firstChild.data = "Messung läuft..";
 						document.getElementById("stateOfSpeed").setAttribute("style", "color: #000");
