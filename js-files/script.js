@@ -320,7 +320,7 @@ function stopTimeMeasuret() {
 		$("#measureState").html("<font>Zu wenig Messpunkte!</font>").css("background-color", "#ff0000");
 		
 	}else{
-		$("#measureState").html("<font>Messung abgeschlossen!</font>").css("background-color", "#00bb00");	
+		$("#measureState").html("<font>Messung abgeschlossen!</font>").css("background-color", "#009FE4");	
 	}
 	
 	log("Die Messung wurde gestoppt. Sie lief " + endTime + " Sekunden");
@@ -888,7 +888,7 @@ function send(sendAsMail) {
 	}
 
 	// zeige Status
-	$("#measureState").html("<font>Messung absenden ...</font>").css("background-color", "#00bb00");
+	$("#measureState").html("<font>Messung absenden ...</font>").css("background-color", "#009FE4");
 	
 	log("send wurde beendet.");
 }
