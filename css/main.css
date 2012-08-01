@@ -8,17 +8,13 @@ body {
 
 header {
 	background: #fdfdfd;
-	background: -moz-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace
-		100%);
+	background: -moz-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fdfdfd),
 		color-stop(50%, #e5e5e5), color-stop(50%, #d8dee2),
 		color-stop(100%, #c4cace) );
-	background: -webkit-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%,
-		#c4cace 100%);
-	background: -o-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace
-		100%);
-	background: -ms-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace
-		100%);
+	background: -webkit-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
+	background: -o-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
+	background: -ms-linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
 	background: linear-gradient(top, #fdfdfd 0%, #e5e5e5 50%, #d8dee2 50%, #c4cace 100%);
 	position: absolute;
 	z-index: 2;
@@ -76,8 +72,11 @@ button.css3button {
 	font: bold 130% Arial, Helvetica, sans-serif;
 	color: #fff;
 	padding: 10px;
-	background: -moz-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347
-		75%, #FFAD72);
+	background: -moz-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72);
+	background: -webkit-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72);
+	background: -o-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72);
+	background: -ms-linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72);
+	background: linear-gradient(top, #FFAD72 0%, #FF9347 25%, #EC6600 50%, #FF9347 75%, #FFAD72);
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFAD72),
 		color-stop(0.25, #FF9347), color-stop(0.50, #EC6600),
 		color-stop(0.75, #FF9347), to(#FFAD72) );
@@ -100,9 +99,12 @@ button.css3button_grey {
 	font: bold 130% Arial, Helvetica, sans-serif;
 	color: #fff;
 	padding: 10px;
-	background: -moz-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa
-		75%, #cccccc);
-	background: -webkit-gradient(linear, left top, left bottom, from(#cccccc),
+	background: -moz-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: -webkit-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: -o-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: -ms-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: -moz-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: linear-gradient(linear, left top, left bottom, from(#cccccc),
 		color-stop(0.25, #aaaaaa), color-stop(0.50, #888888),
 		color-stop(0.75, #aaaaaa), to(#cccccc) );
 	border-radius: 5px;
