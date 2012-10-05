@@ -88,10 +88,8 @@ function initialize() {
 	// Einstellung der Versionsnummer und ob es Android ist oder nicht
 	if (window.cordova || window.PhoneGap) {		// ab PG 1.7 window.cordova
 		isAndroidPhone = true;
-		alert('Script: Cordova!');
 	} else {
 		isAndroidPhone = false;
-		alert('Script: WebApp!');
 	}
 
 	version = "1.0.0";

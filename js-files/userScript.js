@@ -3,10 +3,8 @@
 var urlString;						// String in dem URL gespeichert wird
 if (window.cordova || window.PhoneGap) {				// Angabe ob Android App (ab PG 1.7 window.cordova)
 	android = true;
-	alert('UserScript: Cordova!');
 } else {
 	android = false;
-	alert('UserScript: WebApp!');
 }
 
 
