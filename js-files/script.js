@@ -86,7 +86,7 @@ function initialize() {
 	initSpeedTracker();
 	
 	// Einstellung der Versionsnummer und ob es Android ist oder nicht
-	if (window.cordova) {
+	if (window.cordova || window.PhoneGap) {		// ab PG 1.7 window.cordova
 		isAndroidPhone = true;
 		alert('Script: Cordova!');
 	} else {
