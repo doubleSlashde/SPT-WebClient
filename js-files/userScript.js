@@ -1,7 +1,13 @@
 /*	------------------ Variablen ------------------ */	
 
 var urlString;						// String in dem URL gespeichert wird
-var android = false;				// Angabe ob Android App
+if (window.cordova) {				// Angabe ob Android App
+	android = true;
+	alert('UserScript: Cordova!');
+} else {
+	android = false;
+	alert('UserScript: WebApp!');
+}
 
 
 /*	------------------ Wichtig fuer Consolenausgabe ------------------ */

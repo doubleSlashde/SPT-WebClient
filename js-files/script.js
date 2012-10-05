@@ -86,7 +86,14 @@ function initialize() {
 	initSpeedTracker();
 	
 	// Einstellung der Versionsnummer und ob es Android ist oder nicht
-	isAndroidPhone = false;
+	if (window.cordova) {
+		isAndroidPhone = true;
+		alert('Script: Cordova!');
+	} else {
+		isAndroidPhone = false;
+		alert('Script: WebApp!');
+	}
+
 	version = "1.0.0";
 	
 	// TODO Versionsnummer mit anzeigen
