@@ -1,7 +1,9 @@
 /*	------------------ Variablen ------------------ */	
 
 var urlString;						// String in dem URL gespeichert wird
-if (window.cordova || window.PhoneGap) {				// Angabe ob Android App (ab PG 1.7 window.cordova)
+
+// Angabe ob Android App (ab PG 1.7 window.cordova)
+if (window.cordova || window.PhoneGap) {
 	android = true;
 } else {
 	android = false;
@@ -23,7 +25,7 @@ window.log = function(message) {
 // Funktion die wichtige sachen inizialisiert
 function userInit() {
 	// Versionsangabe
-	version = "1.0.0";
+	version = "1.2.0";
 	
 	// TODO Versionsnummer mit anzeigen
 	
@@ -38,7 +40,7 @@ function userInit() {
 
 function userInitLogin() {
 	// Versionsangabe
-	version = "1.0.0";
+	version = "1.2.0";
 	
 	if(android) {
 		// für Android	

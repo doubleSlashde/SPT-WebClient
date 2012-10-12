@@ -85,14 +85,14 @@ function initialize() {
 	// inizialisiere SpeedTracker
 	initSpeedTracker();
 	
-	// Einstellung der Versionsnummer und ob es Android ist oder nicht
-	if (window.cordova || window.PhoneGap) {		// ab PG 1.7 window.cordova
+	// Angabe ob Android App (ab PG 1.7 window.cordova)
+	if (window.cordova || window.PhoneGap) {
 		isAndroidPhone = true;
 	} else {
 		isAndroidPhone = false;
 	}
 
-	version = "1.0.0";
+	version = "1.2.0";
 	
 	// TODO Versionsnummer mit anzeigen
 	
