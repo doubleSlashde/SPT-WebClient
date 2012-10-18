@@ -103,8 +103,8 @@ button.css3button_grey {
 	background: -webkit-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
 	background: -o-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
 	background: -ms-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
-	background: -moz-linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
-	background: linear-gradient(linear, left top, left bottom, from(#cccccc),
+	background: -linear-gradient(top, #cccccc 0%, #aaaaaa 25%, #888888 50%, #aaaaaa 75%, #cccccc);
+	background: -webkit-gradient(linear, left top, left bottom, from(#cccccc),
 		color-stop(0.25, #aaaaaa), color-stop(0.50, #888888),
 		color-stop(0.75, #aaaaaa), to(#cccccc) );
 	border-radius: 5px;
