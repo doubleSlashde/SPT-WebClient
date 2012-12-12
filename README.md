@@ -2,7 +2,8 @@ SPT-WebClient
 ===========
 
 SpeedTracks - die Mobilfunk Landkarte zum Mitmachen!  
-Lesen Sie bitte vor der Nutzung der Software die [Nutzungsbedingungen](https://github.com/SpeedTracks/SPT-WebClient/wiki/Nutzungsbedingungen).
+Lesen Sie bitte vor der Nutzung der Software die [Nutzungsbedingungen](https://github.com/SpeedTracks/SPT-WebClient/wiki/Nutzungsbedingungen).  
+This software is licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/deed), see the license file for more information.
 
 Initiator: [http://doubleslash.de](http://doubleslash.de)  
 Website: [http://speedtracks.org](http://speedtracks.org)  
