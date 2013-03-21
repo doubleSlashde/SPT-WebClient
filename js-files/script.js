@@ -5,7 +5,7 @@ var originLat; // Breitengrad des eigenen Standorts
 var originLng; // Längengrad des eigenen Standortes
 var geolocationStatus; // Variable ob alles ok mit Geolocation
 var numberOfGeoCalls; // Anzahl wie oft geolocation neu aufgerufen wird(fuer
-			// Debug)
+// Debug)
 var minTrackPoints; // Mindestanzahl an Messpunkten
 
 // Variablen fuer Latenz und Downloadraten Messung
@@ -21,7 +21,7 @@ var downloadTimeSum; // Gesamtzeit download
 var finDownloadMeasure; // gibt an ob Downloadrate schon ermittelt wurde
 var xhr; // Variable für XHR-Objekt
 var shortMeasure; // gibt an welche Messung genommen werden soll(eine alle
-		    // 10sec oder 3 alle 30sec)
+// 10sec oder 3 alle 30sec)
 var finish; // Zeigt an ob Messung fertig ist
 var numberOfmeasurements; // Anzahl der bisherigen Messungen
 
@@ -32,9 +32,9 @@ var endTime; // Endzeit
 var now; // Variable in der jetztige Zeit abgespeichert wird
 var timeStamp; // Zeitpunkt an der die Messung Gestartet wurde.
 var startTimeHelp; // Hilfsvariable um die Zeit zu stoppen von Latenz und
-		    // Downloadrate
+// Downloadrate
 var endTimeHelp; // Hilfsvariable um die Zeit zu stoppen von Latenz und
-		    // Downloadrate
+// Downloadrate
 
 // anderes
 var url; // Url der Downloaddatei
@@ -48,7 +48,7 @@ var urlString; // Speichert richtige URL fuer Webapp oder Andropid
 
 // Variablen für die Ausgabe
 var textResult; // hier wird der Ergebnisstring gespeichert der an die Homepage
-		// geschickt wird
+// geschickt wird
 var textResultMail; // hier wird der Ergebnisstring im Emailformat gespeichert
 var logIndex; // Anzahl von Logeinträgen
 var logFile; // speichert Einträge von Log in String ab
@@ -332,16 +332,6 @@ function stopTimeMeasuret() {
     now = new Date();
     endTime = (now.getTime() - startTime) / 1000;
 
-    // Zeige Status
-    if (numberOfmeasurements < minTrackPoints) {
-	$("#measureState").html("<font>Zu wenig Messpunkte!</font>").css(
-		"background-color", "#ff0000");
-
-    } else {
-	$("#measureState").html("<font>Messung abgeschlossen!</font>").css(
-		"background-color", "#009FE4");
-    }
-
     log("Die Messung wurde gestoppt. Sie lief " + endTime + " Sekunden");
 
     log("stopTimeMeasuret wurde beendet.");
@@ -492,13 +482,13 @@ function intervalMeasure(p_trackmode) {
 
 	if (shortMeasure) {
 	    aktiv = window.setTimeout(function() { // Closure-Funktion:
-						    // Schließt die lokale
-						    // Funktionsvaribale ein,
+		// Schließt die lokale
+		// Funktionsvaribale ein,
 		intervalMeasure(p_trackmode); // konserviert sie und übergibt
-						// diese wieder an die Interval
-						// Funktion
+		// diese wieder an die Interval
+		// Funktion
 	    }, 10000); // setTimeout("intervalM..(p_trackmode)") verliert die
-			// Variable!!
+	    // Variable!!
 	    /*
 	     * if(p_trackmode) { geoThreadP = true; console.log("geoThreadP =
 	     * true"); window.setTimeout("geoThreadP = false;", 9000);
@@ -521,20 +511,33 @@ function intervalMeasure(p_trackmode) {
 function stopMeasure(p_trackmode) {
     log("stopMeasure wurde aufgerufen.");
 
-    // stoppt Messungsintervall
-    finish = true;
-    window.clearTimeout(aktiv);
+    check = confirm("Wollen Sie die Messung wirklich beenden?");
 
-    // stoppt Zeitmessung
-    stopTimeMeasuret();
+    if (check == true) {
+	// Zeige Status
+	if (numberOfmeasurements < minTrackPoints) {
+	    $("#measureState").html("<font>Zu wenig Messpunkte!</font>").css(
+		    "background-color", "#ff0000");
 
-    // **testzwecke**
-    // navigator.notification.alert(textResult);
+	} else {
+	    $("#measureState").html("<font>Messung abgeschlossen!</font>").css(
+		    "background-color", "#009FE4");
+	}
 
-    // wenn Tracking
-    if (p_trackmode) {
-	// sendet die Ergebnisse per Mail oder per post an Servlet
-	send(false);
+	// stoppt Messungsintervall
+	finish = true;
+	window.clearTimeout(aktiv);
+
+	// stoppt Zeitmessung
+	stopTimeMeasuret();
+
+	window.location.href = "#reportPage";
+
+	// wenn Tracking
+	if (p_trackmode) {
+	    // sendet die Ergebnisse per Mail oder per post an Servlet
+	    send(false);
+	}
     }
 
     log("stopMeasure wurde beendet.");
@@ -545,7 +548,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
     log("printTrack wurde aufgerufen.");
 
     var latency = 0; // Variable für die Latenzzeit, wird an Upload Servlet
-			// übergeben
+    // übergeben
     var downloadRate = 0; // Variable für die Downloadrate
     var datasize = 0; // Größe der Datei in kb -> Berechnung der Downloadrate
     var latencyShow = null; // Wert der im Frontend angezeigt wird
@@ -566,12 +569,12 @@ function printTrack(p_dataUrlString, p_trackmode) {
 	if (time != 0) {
 	    if (shortMeasure) {
 		downloadRateShow = ((datasize / time)); // Normale Messungen,
-							// Angabe in KB/s
-							// (Bytes/s =
-							// downloadRate*1000)
+		// Angabe in KB/s
+		// (Bytes/s =
+		// downloadRate*1000)
 		downloadRate = downloadRateShow * 1024; // TODO Prüfen bei
-							// Datenübertragungsgeschwindigkeit
-							// Einheit * 1000
+		// Datenübertragungsgeschwindigkeit
+		// Einheit * 1000
 
 		latency = ((latencyTimeSum) / 2); // milli sec
 	    } else {
@@ -583,7 +586,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
     } else {
 	downloadRate = 0;
 	latency = 0; // Wert der an das Upload Serlver übergeben wird (muss
-			// Zahl sein)
+	// Zahl sein)
 	latencyShow = '&#8211;'; // Wert der im Frontend angezeigt wird
 	downloadRateShow = 0;
     }
@@ -626,7 +629,7 @@ function printTrack(p_dataUrlString, p_trackmode) {
 
 // Funktion die eine Messung durchführt
 function run(p_trackmode) { // Trackmode oder Einzelmessung -> Trackmode: true =
-			    // Tracks, false = Einzel
+    // Tracks, false = Einzel
     log("run wurde aufgerufen.");
 
     downloadTimeSum = 0;
@@ -694,13 +697,13 @@ function run(p_trackmode) { // Trackmode oder Einzelmessung -> Trackmode: true =
 
 // Funktion die die Latenzzeit berechnet mit einer Messung
 function getLatencyShort(p_dataUrl) // Parameter enthält URL zur Datei und gibt
-				    // den Namen an Bsp.
-				    // url50->speedtrack.org/.../50kb.txt
+// den Namen an Bsp.
+// url50->speedtrack.org/.../50kb.txt
 {
     log("getLatency wurde aufgerufen.");
 
     startTimeHelp = new Date(); // da sonst bei Threadwechsel die Daten
-				// verfälscht werden können
+    // verfälscht werden können
     latencyTimeStart = startTimeHelp.getTime();
 
     $.ajax({
@@ -711,7 +714,7 @@ function getLatencyShort(p_dataUrl) // Parameter enthält URL zur Datei und gibt
 	success : function(data) {
 	    // ok Zeit stoppen
 	    endTimeHelp = new Date(); // da sonst bei threadwechsel die daten
-					// verfäscht werdenkönnen
+	    // verfäscht werdenkönnen
 	    latencyTimeEnd = endTimeHelp.getTime();
 
 	    latencyTimeSum = latencyTimeSum
@@ -752,8 +755,8 @@ function getLatency() {
 		    // ok zeit stoppen
 
 		    endTimeHelp = new Date(); // da sonst bei Threadwechsel
-						// die Daten verfäscht werden
-						// können
+		    // die Daten verfäscht werden
+		    // können
 		    latencyTimeEnd = endTimeHelp.getTime();
 
 		    latencyTimeSum = latencyTimeSum
@@ -776,10 +779,10 @@ function getLatency() {
 	};
 
 	xhr.open("HEAD", url, false); // soll nur auf Header holen, und
-					// synchron sein
+	// synchron sein
 
 	startTimeHelp = new Date(); // da sonst bei Threadwechsel die Daten
-				    // verfälscht werden können
+	// verfälscht werden können
 	latencyTimeStartArray[i] = startTimeHelp.getTime();
 
 	xhr.send(null);
@@ -818,9 +821,9 @@ function extraGeoMeasure1() {
 
 // Funktion die die Downloadzeit berechnet mit Ajax und fuer eine Messung
 function getDownloadTimeShort(p_dataUrl, p_trackmode) // Gleiche Funktion wie
-							// oben, jedoch mit Ajax
-							// und nicht direct mit
-							// XHR
+// oben, jedoch mit Ajax
+// und nicht direct mit
+// XHR
 { // Parameter gibt Datei an, Bsp. url50
     log("getDownloadTime wurde aufgerufen.");
 
@@ -876,8 +879,8 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode) // Gleiche Funktion wie
 		    }
 
 		    endTimeHelp = new Date(); // da sonst bei threadwechsel
-						// die daten verfäscht
-						// werdenkönnen
+		    // die daten verfäscht
+		    // werdenkönnen
 		    downloadTimeEnd = endTimeHelp.getTime();
 
 		    downloadTimeSum = downloadTimeSum
@@ -938,7 +941,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode) // Gleiche Funktion wie
 
 // Funktion die die DownloadZeit berechnet mit Ajax und fuer drei Messungen
 function getDownloadTime() // Gleiche Funktion wie oben, jedoch mit Ajax und
-			    // nicht direct mit XHR
+// nicht direct mit XHR
 {
     log("getDownloadTime wurde aufgerufen.");
 
@@ -959,7 +962,7 @@ function getDownloadTime() // Gleiche Funktion wie oben, jedoch mit Ajax und
 		// request funktuion wenn die 50 kilobyte runtergeladen wurden
 
 		endTimeHelp = new Date(); // da sonst bei threadwechsel die
-					    // Daten verfäscht werden können
+		// Daten verfäscht werden können
 		downloadTimeEnd = endTimeHelp.getTime();
 
 		downloadTimeSum = downloadTimeSum
