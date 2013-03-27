@@ -26,7 +26,6 @@
 		<script>
 			function createScroller() {
 				aboutLoggedOutScroll = new iScroll('wrapperaboutLoggedOutPage');
-				infoScroll			 = new iScroll('wrapperinfoPage');
 			}
 		</script>
 		
@@ -60,9 +59,6 @@
 					if (typeof aboutLoggedOutScroll != 'undefined' && aboutLoggedOutScroll != null) {
 						aboutLoggedOutScroll.destroy();
 						aboutLoggedOutScroll = null;
-					} if (typeof infoScroll != 'undefined' && infoScroll != null) {
-						infoScroll.destroy();
-						infoScroll = null;
 					}
 				});
 				
@@ -108,7 +104,7 @@
 					<a href="#newPasswordPage" data-transition="slide">Passwort vergessen</a>
 				</p>
 				<p>
-					<a href="#infoPage" data-transition="slide">Registrierung</a>
+					<a href="#regiPage" data-transition="slide">Registrierung</a>
 				</p>
 			</div>
 		</div>
@@ -190,47 +186,6 @@
 		</footer>
 	</div>
 	
-	<div id="infoPage" data-role="page">
-		<header>
-			<span class="branding">speedTrack</span>
-			<a href="#aboutLoggedOutPage" data-transition="slide"> 
-				<img align="right" src="picture/info.png"> 
-			</a>
-		</header>
-		<div id="wrapperinfoPage">
-			<div class="scroll-content">
-				<p><b>speedTrack</b> ist ein offenes Entwicklungs- und Nutzungs-Projekt. 
-				Die Software wird von verschiedenen Programmierern geschrieben und von uns gepr&uuml;ft. 
-				Sie &uuml;bertr&auml;gt ausschlie&szlig;lich Daten, welche f&uuml;r das Tracken notwendig sind. Sie k&ouml;nnen sich dazu auch jederzeit die 
-				Quellcodes anschauen. Dieses Projekt setzt f&uuml;r die Nutzung technische Erfahrung voraus, zudem kann unsere <b>BETA-</b>
-				Software noch fehlerhaft sein.</p>
-				
-				<p>F&uuml;r die Funktionsf&auml;higkeit oder eventuelle Sch&auml;den auf Mobilfunkger&auml;ten &uuml;bernehmen wir aufgrund der gro&szlig;en Vielfalt 
-				von Ger&auml;te&auml;nderungen, Softwarest&auml;nden und Softwarekombinationen keine Haftung.</p>
-				
-				<p>Eine permanente Messung von Mobilfunknetzen ist nicht vorgesehen und kann gegebenenfalls den AGB der Mobilfunkanbieter 
-				widersprechen oder hohe Kosten verursachen. F&uuml;r solche Nutzungen und daraus entstehende Sch&auml;den &uuml;bernehmen wir keine Haftung.</p>
-				
-				<ul>
-					<li>Wir empfehlen eine Teilnahme im speedTrack Messteam nur technisch entsprechend erfahrenen Personen.</li>
-					<li>Mit der &Uuml;bertragung der Daten an die speedTrack-Plattform erkl&auml;ren Sie sich mit deren Nutzung, Ver&ouml;ffentlichung oder L&ouml;schung durch doubleSlash einverstanden.</li>
-					<li>Durch die Auswertung Ihrer pers&ouml;nlichen Daten, Mobilfunkdaten, Zeit- und Geodaten k&ouml;nnen eventuell Ihre entsprechenden Aufenthaltsorte r&uuml;ckwirkend nachvollzogen werden.</li>
-					<li>Alle Daten dieses Projektes werden sp&auml;ter &uuml;ber eine API und zum Download frei zur Verf&uuml;gung gestellt.</li>
-					<li>Ihre Teilnahme ist freiwillig. Wir bieten daf&uuml;r keine Verg&uuml;tung und &uuml;bernehmen keine Kosten und keine Verantwortung, 
-					weder f&uuml;r Ihre Aufw&auml;nde, noch f&uuml;r Sch&auml;den oder Sch&auml;den Dritter, die durch Ihre Teilnahme entstehen.</li>
-				</ul>
-			</div>
-		</div>
-		<footer>
-			<div id="infoPageBtn">
-				<button data-role="none" type="button" id="infoPageButton1" class="css3button_grey css3button_small" onclick="history.back()">Ablehnen</button>
-				<a href="#regiPage" data-transition="slide">
-					<button data-role="none" type="button" id="infoPageButton2" class="css3button css3button_small">Annehmen</button>
-				</a>
-			</div>
-		</footer>
-	</div>
-	
 	<div id="regiPage" data-role="page">
 		<header>
 			<span class="branding">speedTrack</span>
@@ -262,6 +217,12 @@
 					  	<td><input data-role="none" type="text" id="emailId" class="loginInput" /></td>
 					</tr>
 				</table>
+				<div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <legend>Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie.</legend>
+                        <input type="checkbox" id="agb-check" /> <label for="agb-check">I agree</label>
+                    </fieldset>
+                </div>
 			</div>
 		</div>
 		<footer>
@@ -269,11 +230,22 @@
 				<a href="#loginPage" data-transition="slide">
 					<button data-role="none" type="button" id="infoPageButton1" class="css3button_grey css3button_small">Abbrechen</button>
 				</a>
-				<a href="#regiPage" data-transition="slide">
+				<a href="#" data-transition="slide">
 					<button data-role="none" type="button" id="infoPageButton2" class="css3button css3button_small" onclick="registrationCommit()">Registrieren</button>
 				</a>
 			</div>
 		</footer>
 	</div>
+	
+	<div id="agb-check-fail" data-role="dialog" data-close-btn="none">
+        <div data-role="content">
+            <p>Sie müssen die Nutzungsbedingungen akzeptieren um sich registrieren zu können!</p>
+            <a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b" data-rel="back" data-role="button" href="#"> 
+                <span class="ui-btn-inner"> 
+                    <span class="ui-btn-text">Okay</span>
+                </span>
+            </a>
+        </div>
+    </div>
 	</body>
 </html>

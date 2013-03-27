@@ -125,7 +125,7 @@ button.css3button_small {
 	margin: 0 0 0 3.5%;
 }
 
-#aboutLoggedOutPageBtn,#loginBtn,#forgetPasswordBtn,#infoPageBtn,#regiPageBtn,#optionPageBtn,#stopMeasureBtn,#reportPageBtn
+#aboutLoggedOutPageBtn,#loginBtn,#forgetPasswordBtn,#regiPageBtn,#optionPageBtn,#stopMeasureBtn,#reportPageBtn
 	{
 	position: relative;
 	top: -85%;
@@ -134,7 +134,7 @@ button.css3button_small {
 }
 
 /* ---------- CSS für scrollable Content ---------- */
-#wrapperaboutLoggedOutPage,#wrapperinfoPage,#wrapperregiPage {
+#wrapperaboutLoggedOutPage,#wrapperregiPage {
 	position: absolute;
 	z-index: 1;
 	top: 10%;

@@ -135,8 +135,9 @@ function registrationCommit() {
 
     // Zurücksetzen der Fehlerfarben
     initRegistry();
-
-    // Registrierungsanfrage absenden
+    
+    if ($('#agb-check').is(':checked')) {
+        // Registrierungsanfrage absenden
     $.post(urlString + "speedtrack/STRegistrationServlet", {
         action : "write",
         login : document.getElementById("regNameId").value,
@@ -180,6 +181,10 @@ function registrationCommit() {
             }
         }
     }, "json");
+    } else {
+        $.mobile.changePage("#agb-check-fail");
+    }
+    
     log("registrationCommit wird beendet");
 }
 
