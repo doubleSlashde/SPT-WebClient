@@ -1,6 +1,7 @@
 /*	------------------ Variablen ------------------ */
 
-var urlString; // String in dem URL gespeichert wird
+var urlString;
+// String in dem URL gespeichert wird
 
 // Angabe ob Android App (ab PG 1.7 window.cordova)
 if (window.cordova || window.PhoneGap) {
@@ -26,11 +27,11 @@ function userInit() {
     // TODO Versionsnummer mit anzeigen
 
     if (android) {
-	// für Android
-	urlString = "http://www.speedtracks.org/";
+        // für Android
+        urlString = "http://www.speedtracks.org/";
     } else {
-	// für lokales
-	urlString = "../";
+        // für lokales
+        urlString = "../";
     }
 }
 
@@ -39,16 +40,16 @@ function userInitLogin() {
     version = "1.2.0";
 
     if (android) {
-	// für Android
-	urlString = "http://www.speedtracks.org/";
+        // für Android
+        urlString = "http://www.speedtracks.org/";
     } else {
-	// für lokales
-	urlString = "../";
+        // für lokales
+        urlString = "../";
     }
 
     // Cookie mit loginName vorhanden? -> setze diesen in das Formular ein
     if (getCookie('loginName'))
-	$("#loginNameId").val(getCookie('loginName'));
+        $("#loginNameId").val(getCookie('loginName'));
 }
 
 // Funktion die kontrolliert ob Benutzer eingeloggt ist
@@ -56,14 +57,14 @@ function isLogedInIndex() {
     log("isLogedIn wurde aufgerufen.");
 
     $.post(urlString + "speedtrack/STLoginServlet", {
-	action : "userstatus"
+        action : "userstatus"
     }, function(data) {
-	if (data.success) {
-	    log("Benutzer ist eingeloggt.");
-	    location.href = 'indexLoggedIn.html';
-	} else {
-	    log("Benutzer ist ausgeloggt.");
-	}
+        if (data.success) {
+            log("Benutzer ist eingeloggt.");
+            location.href = 'indexLoggedIn.html';
+        } else {
+            log("Benutzer ist ausgeloggt.");
+        }
     }, "json");
 
     log("isLogedIn wurde beendet.");
@@ -77,34 +78,34 @@ function userLogin() {
     var loginName = $("#loginNameId").val();
 
     if (loginName == null || loginName == "") {
-	alert("Bitte geben sie einen Loginnamen ein");
-	log("Kein Username eingegeben");
+        alert("Bitte geben sie einen Loginnamen ein");
+        log("Kein Username eingegeben");
     } else if (password == null || password == "") {
-	alert("Bitte geben sie ein Passwort ein");
-	log("Kein Passwort eingegeben");
+        alert("Bitte geben sie ein Passwort ein");
+        log("Kein Passwort eingegeben");
     } else {
 
-	// bereite Verfallsdatum für Cookie vor (31 Tage)
-	var cookieExpiry = new Date();
-	cookieExpiry.setTime(cookieExpiry.getTime() + 1000 * 60 * 60 * 24 * 31);
+        // bereite Verfallsdatum für Cookie vor (31 Tage)
+        var cookieExpiry = new Date();
+        cookieExpiry.setTime(cookieExpiry.getTime() + 1000 * 60 * 60 * 24 * 31);
 
-	// setze Cookie loginName mit dem Wert aus dem Formular und
-	// Verfallsdatum
-	setCookie("loginName", loginName, cookieExpiry);
+        // setze Cookie loginName mit dem Wert aus dem Formular und
+        // Verfallsdatum
+        setCookie("loginName", loginName, cookieExpiry);
 
-	$.post(urlString + "speedtrack/STLoginServlet", {
-	    login : loginName,
-	    passwd : password
-	}, function(data) {
-	    if (data.success) {
-		log("userLogin erfolgreich");
-		// send(true); // Sendefunktion des Tracks in script.js
-		location.href = 'indexLoggedIn.html';
-	    } else {
-		log(data.message);
-		alert(data.message);
-	    }
-	}, "json");
+        $.post(urlString + "speedtrack/STLoginServlet", {
+            login : loginName,
+            passwd : password
+        }, function(data) {
+            if (data.success) {
+                log("userLogin erfolgreich");
+                // send(true); // Sendefunktion des Tracks in script.js
+                location.href = 'indexLoggedIn.html';
+            } else {
+                log(data.message);
+                alert(data.message);
+            }
+        }, "json");
     }
 
     log("userLogin wird beendet");
@@ -115,14 +116,14 @@ function userLogout() {
     log("userLogout wird gestartet");
 
     $.ajax({
-	type : "POST",
-	contentType : "application/json;",
-	dataType : "json",
-	async : false,
-	url : urlString + "speedtrack/STLogoutServlet",
-	success : function(data) {
-	    location.href = 'index.html';
-	}
+        type : "POST",
+        contentType : "application/json;",
+        dataType : "json",
+        async : false,
+        url : urlString + "speedtrack/STLogoutServlet",
+        success : function(data) {
+            location.href = 'index.html';
+        }
     });
 
     log("userLogout wird beendet");
@@ -136,65 +137,49 @@ function registrationCommit() {
     initRegistry();
 
     // Registrierungsanfrage absenden
-    $
-	    .post(
-		    urlString + "speedtrack/STRegistrationServlet",
-		    {
-			action : "write",
-			login : document.getElementById("regNameId").value,
-			pass1 : document.getElementById("passwordId1").value,
-			pass2 : document.getElementById("passwordId2").value,
-			email : document.getElementById("emailId").value,
-			// TODO Erweiterte Angaben aus POST-Request entfernen =>
-			// Servlet anpassen!!
-			website : "",
-			country : "",
-			place : "",
-			aboutme : ""
-		    },
-		    function(data) {
-			if (data.success) {
-			    alert('Eine Bestätigungs-Email zur Freischaltung Ihrer Registrierung ist an Sie unterwegs.');
-			    location.href = 'index.html';
-			} else {
-			    if (data.message == "") {
-				var resultString = "Folgende Fehler sind aufgetreten: ";
-				if (data.errors.login != null) {
-				    resultString = resultString
-					    + " Bei Loginname: "
-					    + data.errors.login;
-				    document.getElementById("loginNameLableId")
-					    .setAttribute("style", "color:red");
-				}
-				if (data.errors.pass1 != null) {
-				    resultString = resultString
-					    + " Bei Passwort 1: "
-					    + data.errors.pass1;
-				    document.getElementById("passwordLableId1")
-					    .setAttribute("style", "color:red");
-				}
-				if (data.errors.pass2 != null) {
-				    resultString = resultString
-					    + " Bei Password 2: "
-					    + data.errors.pass2;
-				    document.getElementById("passwordLableId2")
-					    .setAttribute("style", "color:red");
-				}
-				if (data.errors.email != null) {
-				    resultString = resultString
-					    + " Bei E-Mail: "
-					    + data.errors.email;
-				    document.getElementById("emailLableId")
-					    .setAttribute("style", "color:red");
-				} else if (resultString == "Folgende Fehler sind aufgetreten: ") {
-				    resultString = "Es ist ein unbekannter Fehler aufgetreten";
-				}
-				alert(resultString);
-			    } else {
-				alert(data.message);
-			    }
-			}
-		    }, "json");
+    $.post(urlString + "speedtrack/STRegistrationServlet", {
+        action : "write",
+        login : document.getElementById("regNameId").value,
+        pass1 : document.getElementById("passwordId1").value,
+        pass2 : document.getElementById("passwordId2").value,
+        email : document.getElementById("emailId").value,
+        // TODO Erweiterte Angaben aus POST-Request entfernen =>
+        // Servlet anpassen!!
+        website : "",
+        country : "",
+        place : "",
+        aboutme : ""
+    }, function(data) {
+        if (data.success) {
+            alert('Eine Bestätigungs-Email zur Freischaltung Ihrer Registrierung ist an Sie unterwegs.');
+            location.href = 'index.html';
+        } else {
+            if (data.message == "") {
+                var resultString = "Folgende Fehler sind aufgetreten: ";
+                if (data.errors.login != null) {
+                    resultString = resultString + " Bei Loginname: " + data.errors.login;
+                    document.getElementById("loginNameLableId").setAttribute("style", "color:red");
+                }
+                if (data.errors.pass1 != null) {
+                    resultString = resultString + " Bei Passwort 1: " + data.errors.pass1;
+                    document.getElementById("passwordLableId1").setAttribute("style", "color:red");
+                }
+                if (data.errors.pass2 != null) {
+                    resultString = resultString + " Bei Password 2: " + data.errors.pass2;
+                    document.getElementById("passwordLableId2").setAttribute("style", "color:red");
+                }
+                if (data.errors.email != null) {
+                    resultString = resultString + " Bei E-Mail: " + data.errors.email;
+                    document.getElementById("emailLableId").setAttribute("style", "color:red");
+                } else if (resultString == "Folgende Fehler sind aufgetreten: ") {
+                    resultString = "Es ist ein unbekannter Fehler aufgetreten";
+                }
+                alert(resultString);
+            } else {
+                alert(data.message);
+            }
+        }
+    }, "json");
     log("registrationCommit wird beendet");
 }
 
@@ -204,14 +189,14 @@ function newPassword() {
 
     // Passwordanfrage absenden
     $.post(urlString + "speedtrack/STForgotPasswordServlet", {
-	login : document.getElementById("forgetPasswordId").value
+        login : document.getElementById("forgetPasswordId").value
     }, function(data) {
-	if (data.success) {
-	    alert('Das generierte Passwort wurde erfolgreich verschickt.');
-	    location.href = 'index.html';
-	} else {
-	    alert(data.message);
-	}
+        if (data.success) {
+            alert('Das generierte Passwort wurde erfolgreich verschickt.');
+            location.href = 'index.html';
+        } else {
+            alert(data.message);
+        }
     }, "json");
 
     log("newPassword wird beendet");
@@ -221,26 +206,17 @@ function newPassword() {
 function initRegistry() {
     log("initRegistry wird gestartet");
 
-    document.getElementById("loginNameLableId").setAttribute("style",
-	    "color:black");
-    document.getElementById("passwordLableId1").setAttribute("style",
-	    "color:black");
-    document.getElementById("passwordLableId2").setAttribute("style",
-	    "color:black");
-    document.getElementById("emailLableId")
-	    .setAttribute("style", "color:black");
+    document.getElementById("loginNameLableId").setAttribute("style", "color:black");
+    document.getElementById("passwordLableId1").setAttribute("style", "color:black");
+    document.getElementById("passwordLableId2").setAttribute("style", "color:black");
+    document.getElementById("emailLableId").setAttribute("style", "color:black");
 
     log("initRegistry wird beendet");
 }
 
 // Funktion zum Erzeugen eines Cookies und Setzen seines Werts
 function setCookie(name, value, expiryDate) {
-    document.cookie = escape(name)
-	    + "="
-	    + escape(value)
-	    + "; path=/"
-	    + ((expiryDate == null) ? "" : "; expires="
-		    + expiryDate.toGMTString());
+    document.cookie = escape(name) + "=" + escape(value) + "; path=/" + ((expiryDate == null) ? "" : "; expires=" + expiryDate.toGMTString());
 }
 
 // Funktion zum Abrufen eines Cookie-Werts
@@ -250,15 +226,15 @@ function getCookie(name) {
     var start, end;
 
     if (documentCookie.length > 0) {
-	start = documentCookie.indexOf(cookieName);
-	if (start != -1) {
-	    start += cookieName.length;
-	    end = documentCookie.indexOf(";", start);
-	    if (end == -1)
-		end = documentCookie.length;
+        start = documentCookie.indexOf(cookieName);
+        if (start != -1) {
+            start += cookieName.length;
+            end = documentCookie.indexOf(";", start);
+            if (end == -1)
+                end = documentCookie.length;
 
-	    return unescape(documentCookie.substring(start, end));
-	}
+            return unescape(documentCookie.substring(start, end));
+        }
     }
     return null;
 }
