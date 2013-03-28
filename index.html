@@ -27,6 +27,10 @@
 			function createScroller() {
 				aboutLoggedOutScroll = new iScroll('wrapperaboutLoggedOutPage');
 			}
+			
+			function closeDialog(selector) {
+			    $(selector).dialog("close");
+			}
 		</script>
 		
 		<script>
@@ -219,7 +223,7 @@
 				</table>
 				<div id="check" data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
-                        <legend>Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie.</legend>
+                        <legend>Ich habe die <a href="#" target="_blank">Nutzungsbedingungen</a> gelesen und akzeptiere sie.</legend>
                         <input type="checkbox" id="agb-check" /> <label for="agb-check">I agree</label>
                     </fieldset>
                 </div>
@@ -239,7 +243,7 @@
 	
 	<div id="agb-check-fail" data-role="dialog" data-close-btn="none">
         <div data-role="content">
-            <p>Sie müssen die Nutzungsbedingungen akzeptieren um sich registrieren zu können!</p>
+            <p>Sie müssen die <a href="#" target="_blank" onclick="closeDialog('#agb-check-fail')" >Nutzungsbedingungen</a> akzeptieren um sich registrieren zu können!</p>
             <a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b" data-rel="back" data-role="button" href="#"> 
                 <span class="ui-btn-inner"> 
                     <span class="ui-btn-text">Okay</span>
