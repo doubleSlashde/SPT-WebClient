@@ -34,6 +34,14 @@ label,.label {
 	margin: 15% 0 0 0;
 }
 
+#regiForm {
+	margin: 5% 0 0 0;
+}
+
+#check {
+	margin: 5% 0 0 0;
+}
+
 #loginHelp {
 	width: 96%;
 	height: 45%;
