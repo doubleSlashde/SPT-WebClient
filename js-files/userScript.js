@@ -22,7 +22,7 @@ window.log = function(message) {
 // Funktion die wichtige sachen inizialisiert
 function userInit() {
     // Versionsangabe
-    version = "1.3.0";
+    version = "1.3.1";
 
     // TODO Versionsnummer mit anzeigen
 
@@ -37,7 +37,7 @@ function userInit() {
 
 function userInitLogin() {
     // Versionsangabe
-    version = "1.3.0";
+    version = "1.3.1";
 
     if (android) {
         // für Android
