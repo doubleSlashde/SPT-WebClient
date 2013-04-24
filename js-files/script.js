@@ -1005,7 +1005,7 @@ function sendReportAsMail() {
     var link = "mailto:speedtrack.report@doubleslash.de?" + 
     "subject=" + "Track und Logfile der Messung mit Webapp" + 
     "&body=" + "Kopieren Sie den unten aufgeführten Track in eine Textdatei und laden diese auf das speedTrack Portal." + "%0A" + "%0A" +
-    "------------Track Start------------" + "%0A" + textResultMail + "%0A" + "------------Track Ende------------" + "%0A" + "%0A" +
+    "------------Track Start------------" + "%0A"+ "%0A" + textResultMail + "%0A" + "------------Track Ende------------" + "%0A" + "%0A" +
     "Da ein Fehler aufgetreten ist konnte der Benutzer die Messung per Email versenden." + "%0A" + "Es ist Folgender Fehler aufgetreten: " + errorMessage + "%0A" + "%0A" + logFile;
 
     window.location.href = link;
