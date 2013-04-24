@@ -94,6 +94,8 @@ var errorMessage;
 // Hier wird der letzte Fehler abgespeichert
 var headerString;
 // Variable in der der Header gespeichert wird
+var headerStringMail
+// Variable in der der Header für Mail gespeichert wird
 
 /* ------------------ Wichtig fuer Consolenausgabe ------------------ */
 
@@ -376,6 +378,7 @@ function createHeader() {
     log("createHeader wurde aufgerufen.");
 
     headerString = "VERSION:speedTracker Handy v3.0" + "\r" + "DATAVERSION:1.1" + "\r" + "MOVEMENTTYPE:" + document.getElementById("movementTypeId").options[document.getElementById("movementTypeId").selectedIndex].value + "\r" + "FILE:" + "http://speedtracks.org/client/downloadFiles/100kb.txt" + "\r" + "FILESIZE:" + "102400" + "\r" + "HARDWARE:" + document.getElementById("hardwareId").value + "\r" + "GPS:" + "built-in" + "\r" + "MODEM:" + "built-in" + "\r" + "NETWORK:" + document.getElementById("networkId").options[document.getElementById("networkId").selectedIndex].value + "\r" + "\r";
+    headerStringMail = headerString.replace(/\r/g, "%0A");
 
     log("createHeader wurde beendet.");
 }
@@ -405,6 +408,7 @@ function initSpeedTracker(p_trackmode) {
 
     // und speichert ihn
     textResult = headerString;
+    textResultMail = headerStringMail;
 
     // Inizialisiert die Anzeigen
     numberOfmeasurements = 0;
@@ -1107,5 +1111,4 @@ function save(downloadRate, latency, latitude, longitude, timestamp, measureTyp)
     // Ergebnisse abspeichern für Email
     textResultNew = textResultMail + downloadRate + "|" + latency + "|" + latitude + "|" + longitude + "|" + timestamp + "|" + measureTyp + "%0A";
     textResultMail = textResultNew;
-    // alert(textResult);
 }
