@@ -142,11 +142,15 @@ function initialize() {
     if (isAndroidPhone) {
         // für Android
         urlString = "http://www.speedtracks.org/";
+        
+        isGPSActive();
 
     } else {
         // für lokales
         urlString = "../";
         // Homepage und Lokal
+        
+        // TODO GPS Hinweis?
     }
 
     // URL von Downloadpacket welches runtergeladen werden soll
@@ -1105,6 +1109,22 @@ function checkConnection() {
 
     return states[networkState];
     // alert('Connection type: ' + states[networkState]);
+}
+
+function isGPSActive() {
+    gpsDetect = cordova.require('cordova/plugin/gpsDetectionPlugin');
+    gpsDetect.checkGPS(onGPSSuccess, onGPSError);
+
+    function onGPSSuccess(on) {
+        if (!on) {
+            alert("Für die Nutzung der Anwendung sollte GPS aktiviert werden!");
+            return false;
+        } else return true;
+    }
+
+    function onGPSError(e) {
+        alert("Error : "+e);
+    }
 }
 
 function save(downloadRate, latency, latitude, longitude, timestamp, measureTyp) {
