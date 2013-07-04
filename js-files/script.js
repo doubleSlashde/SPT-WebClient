@@ -201,7 +201,7 @@ function geoStart() {
         navigator.geolocation.getCurrentPosition(geoCallback, geoErrorCallback, {
             enableHighAccuracy : true,
             timeout : 4000,
-            maximumAge : 2000
+            maximumAge : 1000
         });
 
         log("geo ist an, der Aktuelle Ort wird als Start gewählt");
@@ -816,7 +816,7 @@ function extraGeoMeasure2() {
     log("extraGeoMeasure2 wurde aufgerufen");
     var options = {
         enableHighAccuracy : true,
-        timeout : 2000,
+        timeout : 3000,
         maximumAge : 1000
     };
     navigator.geolocation.getCurrentPosition(extraGeoCallback, extraGeoErrorCallback, options);
