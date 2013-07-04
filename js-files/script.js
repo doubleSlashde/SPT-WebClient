@@ -236,6 +236,9 @@ function geoCallback(position) {
     var lngRounded = (Math.round(c.longitude * 100 * 1000)) / 100000;
 
     var accuracy = position.coords.accuracy;
+    
+    log("Lat: " + latRounded + ", Lon: " + lngRounded);
+    log("Accuracy (in meters): " + accuracy);
 
     // ueberpruefen ob sich die Koordinaten geaendert haben
     if (latRounded == originLat && lngRounded == originLng) {
