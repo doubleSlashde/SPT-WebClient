@@ -397,7 +397,7 @@ function initSpeedTracker(p_trackmode) {
     logFile = logFile + "%0A" + "%0A" + "%0A" + "Starte neue Aufnahme der Logs : " + "%0A";
 
     // Setzt die Anzahl der minimalen Messpunkte
-    minTrackPoints = 20;
+    minTrackPoints = 5;
 
     // Zeit Null setzen
     downloadTimeStart = 0;
