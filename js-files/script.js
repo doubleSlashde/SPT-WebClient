@@ -6,6 +6,8 @@ var originLat;
 var originLng;
 // Längengrad des eigenen Standortes
 var geolocationStatus;
+// Counter der die geoInit Aufrufe zählt
+var geoInitLoopCounter = 0;
 // Variable ob alles ok mit Geolocation
 var numberOfGeoCalls;
 // Anzahl wie oft geolocation neu aufgerufen wird(fuer
@@ -184,12 +186,33 @@ function geoInit() {
     // Geolocation geht nicht, setze status auf false, damit nicht gemessen wird
     geolocationStatus = false;
 
-    // läd origin mit standart Koordinaten
-    originLat = 48.137411;
-    originLng = 11.581028;
-    log("München Mitte wird als Start gewählt");
+    if (navigator.geolocation) {
+        // geo ist an
+        navigator.geolocation.getCurrentPosition(geoInitCallback, geoErrorCallback, {
+            enableHighAccuracy : true,
+            timeout : 30000,
+            maximumAge : 1000
+        });
+
+        log("geo ist an, der Aktuelle Ort wird als Start gewählt");
+    }
 
     log("start wird beendet");
+} 
+
+function geoInitCallback(position) {       
+    geoInitLoopCounter = geoInitLoopCounter + 1;
+    if (geoInitLoopCounter < 2) {
+	if (position.coords.accuracy < 300) {
+	    originLat = (Math.round(position.coords.latitude * 100 * 1000)) / 100000;
+	    originLng = (Math.round(position.coords.longitude * 100 * 1000)) / 100000;
+	    geolocationStatus = true;
+	} else {
+	    window.setTimeout(function() { geoInit(); }, 30000);
+	}
+    } else {
+	alert("Es konnte keine Position bestimmt werden!");
+    }
 }
 
 // Funktion die Testet ob Geo an ist
@@ -200,7 +223,7 @@ function geoStart() {
         // geo ist an
         navigator.geolocation.getCurrentPosition(geoCallback, geoErrorCallback, {
             enableHighAccuracy : true,
-            timeout : 4000,
+            timeout : 20000,
             maximumAge : 1000
         });
 
@@ -503,7 +526,7 @@ function intervalMeasure(p_trackmode) {
                 // konserviert sie und übergibt
                 // diese wieder an die Interval
                 // Funktion
-            }, 10000);
+            }, 30000);
             // setTimeout("intervalM..(p_trackmode)") verliert die
             // Variable!!
             /*
@@ -816,11 +839,11 @@ function extraGeoMeasure2() {
     log("extraGeoMeasure2 wurde aufgerufen");
     var options = {
         enableHighAccuracy : true,
-        timeout : 3000,
+        timeout : 10000,
         maximumAge : 1000
     };
     navigator.geolocation.getCurrentPosition(extraGeoCallback, extraGeoErrorCallback, options);
-    window.setTimeout("extraGeoMeasure1()", 2000);
+    window.setTimeout("extraGeoMeasure1()", 5000);
     log("extraGeoMeasure2 wurde beendet");
 }
 
@@ -828,7 +851,7 @@ function extraGeoMeasure1() {
     log("extraGeoMeasure1 wurde aufgerufen");
     if (geoThread == true || geoThreadP == true) {
         if (navigator.geolocation) {
-            window.setTimeout("extraGeoMeasure2()", 3000);
+            window.setTimeout("extraGeoMeasure2()", 5000);
             // console.log("geoThread: "+geoThred+" geoThreadP: " +geoThreadP);
         }
     } else {
@@ -880,7 +903,7 @@ function getDownloadTimeShort(p_dataUrl, p_trackmode)// Gleiche Funktion wie
         dataType : "text",
         success : function(data) {
             // Callback Funktion für erfolgreichen Download
-            geoThread = false;
+            //geoThread = false;
 
             if (p_trackmode) {
                 $("#measureState").html("<font>Messung l&auml;uft ...</font>").css("background-color", "#009FE4");
