@@ -137,7 +137,7 @@ function initialize() {
         isAndroidPhone = false;
     }
 
-    version = "1.3.1";
+    version = "1.3.2";
 
     // TODO Versionsnummer mit anzeigen
 
@@ -407,7 +407,7 @@ function stopTimeMeasuret() {
 function createHeader() {
     log("createHeader wurde aufgerufen.");
 
-    headerString = "VERSION:speedTracker Handy v1.3.1" + "\r" + "DATAVERSION:1.1" + "\r" + "MOVEMENTTYPE:" + document.getElementById("movementTypeId").options[document.getElementById("movementTypeId").selectedIndex].value + "\r" + "FILE:" + "http://speedtracks.org/client/downloadFiles/100kb.txt" + "\r" + "FILESIZE:" + "102400" + "\r" + "HARDWARE:" + document.getElementById("hardwareId").value + "\r" + "GPS:" + "built-in" + "\r" + "MODEM:" + "built-in" + "\r" + "NETWORK:" + document.getElementById("networkId").options[document.getElementById("networkId").selectedIndex].value + "\r" + "\r";
+    headerString = "VERSION:speedTracker Handy v1.3.2" + "\r" + "DATAVERSION:1.1" + "\r" + "MOVEMENTTYPE:" + document.getElementById("movementTypeId").options[document.getElementById("movementTypeId").selectedIndex].value + "\r" + "FILE:" + "http://speedtracks.org/client/downloadFiles/100kb.txt" + "\r" + "FILESIZE:" + "102400" + "\r" + "HARDWARE:" + document.getElementById("hardwareId").value + "\r" + "GPS:" + "built-in" + "\r" + "MODEM:" + "built-in" + "\r" + "NETWORK:" + document.getElementById("networkId").options[document.getElementById("networkId").selectedIndex].value + "\r" + "\r";
     headerStringMail = headerString.replace(/\r/g, "%0A");
 
     log("createHeader wurde beendet.");
